@@ -18,6 +18,23 @@ function addBookToLibrary(book) {
 }
 
 
+/**
+ * TODO: get entries of object to display all (even if i add later on)
+ */
+function displayBook() {
+    info.innerText = ``;
+    myLibrary.forEach((book) => {
+        info.innerText +=
+            `title: ${book.title} \n` +
+            `author: ${book.author} \n` +
+            `pages: ${book.pages} \n` +
+            `read: ${book.read} \n` +
+            `info: ${book.info()} \n`;
+    });
+}
+
+
+
 const form = document.getElementById("add-book-form");
 const info = document.getElementById("b_array")
 
@@ -42,13 +59,14 @@ form.addEventListener(`submit`, (x) => {
 
 
     // info.innerText += "\n" + book.info() + `  :: index -> ${myLibrary.length-1}`;
-    info.innerText = ``;
-    myLibrary.forEach((book) => {
-        // console.log(book.info() + "\n")
-        info.innerText += book.info() + "\n";
-    });
+    // info.innerText = ``;
+    // myLibrary.forEach((book) => {
+    //     // console.log(book.info() + "\n")
+    //     info.innerText += book.info() + "\n";
+    // });
     // console.log(myLibrary);
 
+    displayBook();
 });
 
 form.addEventListener("formdata", (e) => {
