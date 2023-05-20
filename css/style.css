@@ -1,0 +1,98 @@
+/* || General styles */
+:root {
+    --header-bg: #000000;
+    --header-text: #FFFFFF;
+
+    --main-bg: #E2E8F0;
+    --main-text: #636363;
+
+    --footer-bg: #000000;
+    --footer-text: #FFFFFF;
+    
+    --btn-bg: #1992D4;
+    --btn-text: #FFFFFF;
+    
+    --proj-card-bg: #FFFFFF;
+
+    --system-ui: system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif,
+        "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    font-family: var(--system-ui);
+}
+
+h1,
+h2,
+h3,
+h4 {
+    margin: 0;
+    padding: 0;
+}
+/* … */
+
+
+/* || SITEWIDE */
+
+
+/* … */
+
+
+
+/* || UTILITIES */
+
+/* 
+utility classes, for example, a class
+     that removes the default list style for lists 
+     we're going to display, example a class that 
+     removes features when displayed */
+
+/* … */
+
+/* || Typography */
+
+
+/* … */
+
+/* || Header and Main Navigation */
+header{
+    background-color: var(--header-bg);
+    color: var(--header-text);
+    margin-bottom: auto;
+}
+/* … */
+
+/* || PAGE: index.html */
+
+main{
+    background-color: coral;
+    height: 100%;
+    display: grid;
+    grid-template: repeat(5, 1fr) / repeat(8, 1fr);
+}
+
+#library{
+    background-color: #1992D4;
+    /* grid-area:   1/1/8/6; */
+    grid-row: 1/6;
+    grid-column: 1/7;
+}
+
+#current_book{
+    background-color: mediumspringgreen;
+    grid-row: 1/8;
+    grid-column: 7/9;
+}
+
+footer {
+    color: var(--footer-text);
+    background-color: var(--footer-bg );
+    margin-top: auto;
+}
+/* … */
