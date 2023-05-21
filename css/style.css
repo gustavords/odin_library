@@ -16,12 +16,16 @@
 
     --system-ui: system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif,
         "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+
+    --display-height: 100vh;
+    --header-height: calc(var(--display-height)*.075);
+    --footer-height: calc(var(--display-height)*.04)
 }
 
 body {
     margin: 0;
     padding: 0;
-    height: 100vh;
+    height: var(--display-height);
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
@@ -69,6 +73,7 @@ header {
     margin-bottom: auto;
     display: flex;
     padding: .5rem 0;
+    /* height: var(--header-height); */
 }
 
 header h1 {
@@ -84,10 +89,12 @@ header button {
 /* || PAGE: index.html */
 
 main {
-    background-color: coral;
+    --main-height: calc(var(--display-height) - var(--header-height) - var(--footer-height));
+    /* height: var(--main-height); */
     height: 100%;
+    background-color: coral;
     display: grid;
-    grid-template: repeat(5, 1fr) / repeat(8, 1fr);
+    grid-template: repeat(1, 1fr) / repeat(8, 1fr);
 }
 
 
@@ -96,6 +103,7 @@ main {
     grid-row: 1/6;
     grid-column: 1/7;
 }
+
 
 #lib_title,
 #lib_grid div {
@@ -108,16 +116,23 @@ main {
 }
 
 #lib_grid {
+    /* height: calc(var(--main-height) - (var(--main-height)*.12)); */
+    height: clamp(min(10vw, 20rem), 350px, max(90vw, 55rem));;
     background-color: aqua;
     padding: 1rem;
     display: grid;
     /* row/column */
-    /*set an clamp for collumsn*/
-    grid-template: repeat(auto-fit, minmax(145px, 25%)) / repeat(auto-fit, minmax(150px, 1fr));
+    /*set an clamp for column*/
+    grid-template: repeat(auto-fit, 120px) / repeat(auto-fill, minmax(150px, 1fr));
+    /* grid-template: repeat(3, 120px) / repeat(4, 140px); */
+
+    /* only thing that keeps all rows same size */
+    grid-auto-rows: 120px;
     gap: 1rem;
 
-    /* resize: both;
-    overflow: auto; */
+    /* resize:both; */
+    overflow-y: auto;
+    scrollbar-width: thin;
 }
 
 .add-btn {
@@ -138,28 +153,33 @@ main {
 }
 
 #overlay {
-    display: none;
+    /* display: none; */
     position: fixed;
-    top:0;
+    top: 0;
     bottom: 0;
     right: 0;
     left: 0;
     z-index: 1;
     background-color: rgb(0, 0, 0, .5);
-
 }
 
-#modal{
+#modal {
     max-width: 600px;
     height: 350px;
     margin: auto;
     background-color: white;
     position: absolute;
-    top:0;
+    top: 0;
     bottom: 0;
     right: 0;
     left: 0;
     /* z-index: 1; */
+}
+
+#modal form fieldset{
+    display: flex;
+    flex-direction: column;
+
 }
 
 .lib_card {
@@ -231,6 +251,7 @@ main {
 }
 
 footer {
+    /* height: var(--footer-height); */
     color: var(--footer-text);
     background-color: var(--footer-bg);
     margin-top: auto;
