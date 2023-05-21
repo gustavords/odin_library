@@ -111,7 +111,7 @@ main {
     background-color: aqua;
     padding: 1rem;
     display: grid;
-    /* row/column */
+    /* row/column */ /*set an clamp for collumsn*/
     grid-template: repeat(auto-fit, minmax(145px, 25%)) / repeat(auto-fit, minmax(150px, 1fr));
     gap: 1rem;
 
@@ -119,22 +119,32 @@ main {
     overflow: auto; */
 }
 
+.add_btn{
+    margin:0;
+    padding: 0;
+    border: 5px dashed white;
+    text-decoration: none;
+    background-color: transparent;
+}
+
+.add_btn:focus{
+    color: red;
+}
+.add_btn:hover{
+    color: yellow;
+}
+
+
 .lib_card {
     background-color: mediumorchid;
     padding: .2rem;
-    /* height: auto;
-    width: auto; */
     display: flex;
 }
 
 .lc_main {
     background-color: white;
     display: grid;
-    /* grid-template-rows: 1fr 1fr;
-    grid-template-columns: 1fr 1fr; */
-
     grid-template: repeat(2, 50%) / repeat(2, 50%);
-    /* height: fit-content; */
     grid-template-areas:
         "top top"
         "left right";
@@ -199,3 +209,4 @@ footer {
 }
 
 /* … */
+
