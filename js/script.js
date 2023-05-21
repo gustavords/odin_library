@@ -66,12 +66,15 @@ const add_book_btn = document.querySelectorAll(`.add-btn`);
 const close_modal_btn = document.getElementById(`close-modal-btn`);
 
 
-add_book_btn.forEach((x)=>{
+add_book_btn.forEach((x) => {
     x.addEventListener(`click`, () => {
         overlay.style.display = `block`;
     });
 });
 
+overlay.addEventListener(`click`, () => {
+    overlay.style.display = `none`;
+});
 close_modal_btn.addEventListener(`click`, () => {
     overlay.style.display = `none`;
 });
