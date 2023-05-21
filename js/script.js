@@ -1,4 +1,16 @@
+const form = document.getElementById("add-book-form");
+const info = document.getElementById("b_array")
+let string = ``;
 let myLibrary = [];
+
+const theHobbit = new Book(`The Hobbit`, `J.R.R. Tolkien`, `295`, true);
+const theHobbit2 = new Book(`The Hobbit2`, `J.R.R. Tolkien2`, `2952`, false);
+const theHobbit3 = new Book(`The Hobbit3`, `J.R.R. Tolkien3`, `2953`, false);
+
+
+myLibrary.push(theHobbit);
+myLibrary.push(theHobbit2);
+myLibrary.push(theHobbit3);
 
 function Book(title, author, pages, read) {
     this.title = title;
@@ -21,8 +33,7 @@ function addBookToLibrary(form) {
         formData.get("title"),
         formData.get("author"),
         formData.get("pages"),
-        formData.get("read")
-    );
+        formData.get("read"));
     // do stuff here
     myLibrary.push(book);
 }
@@ -42,12 +53,43 @@ function displayBook() {
     });
 }
 
+// const crdTitle = document.querySelector(`.lc_top p:first-child`);
+// const crdAuthor = document.querySelector(`.lc_top p:nth-child(2)`);
+// const crdPages = document.querySelector(`.lc_top p:last-child`);
 
 
-const form = document.getElementById("add-book-form");
-const info = document.getElementById("b_array")
+const libraryGrid = document.getElementById(`lib_grid`);
 
-let string = ``;
+function displayCards() {
+    //remove all cards from grid to update
+    while (libraryGrid.firstChild) {
+        libraryGrid.removeChild(libraryGrid.firstChild);
+    }
+    myLibrary.forEach((obj, index) => {
+        const card = document.createElement(`div`);
+        const title = document.createElement(`p`);
+        const author = document.createElement(`p`);
+        const pages = document.createElement(`p`);
+        const read = document.createElement(`p`);
+
+        card.id = `${index}`
+        card.className = `card`
+        title.innerText = `${obj.title}`;
+        author.innerText = `${obj.author}`;
+        pages.innerText = `${obj.pages}`;
+        read.innerText = `${obj.read}`;
+
+        //for much more stylized code insertAdjacentHTML() 
+        card.append(title, author, pages, read);
+        libraryGrid.appendChild(card);
+
+
+    });
+
+}
+
+
+
 
 form.addEventListener(`submit`, (x) => {
     //so form doesn't mess up
@@ -55,7 +97,6 @@ form.addEventListener(`submit`, (x) => {
     addBookToLibrary(form);
     displayBook();
 
-    
     //for testing
     // console.log(form.querySelector('input[name="title"]').value);
 });

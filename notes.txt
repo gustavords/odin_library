@@ -1,0 +1,86 @@
+Creating a Library Notes:
+
+HTML, CSS:
+- like the design i drew (./images/rough-design)
+
+JS:
+
+
+
+///this is the form
+
+<div>
+    <h1>Library of Alexandria</h1>
+    
+        <form id="add-book-form" action="" onsubmit="" autocomplete="off">
+            <fieldset>
+                <legend>Add book</legend>
+                <label for="title">Title:</label>
+                <input type="text" name="title" id="title">
+                <label for="author">Author:</label>
+                <input type="text" name="author" id="author">
+                <label for="pages">Pages</label>
+                <input type="number" name="pages" id="pages">
+    
+                <!-- TODO: make into toggle button -->
+                <!-- simple checkbox method -->
+                <label for="read">Read:</label>
+                <input type="checkbox" name="read" id="read" >
+    
+            </fieldset>
+            <button type="submit">Add</button>
+            <button type="reset">Reset/Cancel</button>
+        </form>
+    
+        <p id="b_array"></p>
+</div>
+
+
+
+
+////these are the cards!!!
+
+<div class="lib_card">
+<div class="lc_main">
+    <div class="lc_top">
+        <p>title</p>
+        <p>author</p>
+        <p>pages</p>
+    </div>
+    <div class="lc_left">
+        <img src="" alt="#img">
+    </div>
+    <div class="lc_right">
+        <div class="read_toggle">
+            <label for="view">Read? </label>
+            <input type="checkbox" name="read" id="read">
+        </div>
+        <button type="button" class="lc_del"><i class="fas fa-trash">Del</i></button>
+        <button type="button" class="lc_vw"><i class="fas fa-eye"
+                aria-hidden="true">Vw</i></button>
+    </div>
+</div>
+<div class="lc_read">read</div>
+</div>
+<div class="lib_card">
+<div class="lc_main">
+    <div class="lc_top">
+        <p>`The Hobbit`</p>
+        <p> by `J.R.R. Tolkien`</p>
+        <p>`295` pgs</p>
+    </div>
+    <div class="lc_left">
+        <img src="" alt="#img">
+    </div>
+    <div class="lc_right">
+        <div class="read_toggle">
+            <label for="view">Read? </label>
+            <input type="checkbox" name="read" id="read">
+        </div>
+        <button type="button" class="lc_del"><i class="fas fa-trash">Del</i></button>
+        <button type="button" class="lc_vw"><i class="fas fa-eye"
+                aria-hidden="true">Vw</i></button>
+    </div>
+</div>
+<div class="lc_read">read</div>
+</div>
