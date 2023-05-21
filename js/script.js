@@ -23,41 +23,6 @@ Book.prototype.info = function () {
     return `${this.title} by ${this.author}, ${this.pages}, ${this.read}`;
 }
 
-
-function addBookToLibrary(form) {
-    //for testing
-    // console.log(form.querySelector('input[name="title"]').value);
-
-    const formData = new FormData(form);
-    const book = new Book(
-        formData.get("title"),
-        formData.get("author"),
-        formData.get("pages"),
-        formData.get("read"));
-    // do stuff here
-    myLibrary.push(book);
-}
-
-/**
- * TODO: get entries of object to display all (even if i add later on)
- */
-function displayBook() {
-    info.innerText = ``;
-    myLibrary.forEach((book) => {
-        info.innerText +=
-            `title: ${book.title} \n` +
-            `author: ${book.author} \n` +
-            `pages: ${book.pages} \n` +
-            `read: ${book.read} \n` +
-            `info: ${book.info()} \n`;
-    });
-}
-
-// const crdTitle = document.querySelector(`.lc_top p:first-child`);
-// const crdAuthor = document.querySelector(`.lc_top p:nth-child(2)`);
-// const crdPages = document.querySelector(`.lc_top p:last-child`);
-
-
 const libraryGrid = document.getElementById(`lib_grid`);
 
 function displayCards() {
@@ -95,19 +60,59 @@ function displayCards() {
 
 }
 
-const add_btn_card = document.querySelector(`.add_btn`);
+
 const overlay = document.getElementById(`overlay`);
+const add_book_btn = document.querySelectorAll(`.add-btn`);
 const close_modal_btn = document.getElementById(`close-modal-btn`);
 
-add_btn_card.addEventListener(`click`, (e) => {
-    // alert(`works`);
-    overlay.style.display = `block`;
+
+add_book_btn.forEach((x)=>{
+    x.addEventListener(`click`, () => {
+        overlay.style.display = `block`;
+    });
 });
 
 close_modal_btn.addEventListener(`click`, () => {
     overlay.style.display = `none`;
 });
 
+
+
+
+
+
+function addBookToLibrary(form) {
+    //for testing
+    // console.log(form.querySelector('input[name="title"]').value);
+
+    const formData = new FormData(form);
+    const book = new Book(
+        formData.get("title"),
+        formData.get("author"),
+        formData.get("pages"),
+        formData.get("read"));
+    // do stuff here
+    myLibrary.push(book);
+}
+
+/**
+ * TODO: get entries of object to display all (even if i add later on)
+ */
+function displayBook() {
+    info.innerText = ``;
+    myLibrary.forEach((book) => {
+        info.innerText +=
+            `title: ${book.title} \n` +
+            `author: ${book.author} \n` +
+            `pages: ${book.pages} \n` +
+            `read: ${book.read} \n` +
+            `info: ${book.info()} \n`;
+    });
+}
+
+// const crdTitle = document.querySelector(`.lc_top p:first-child`);
+// const crdAuthor = document.querySelector(`.lc_top p:nth-child(2)`);
+// const crdPages = document.querySelector(`.lc_top p:last-child`);
 
 form.addEventListener(`submit`, (x) => {
     //so form doesn't mess up

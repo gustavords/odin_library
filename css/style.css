@@ -120,7 +120,8 @@ main {
     overflow: auto; */
 }
 
-.add_btn {
+.add-btn {
+    color: white;
     margin: 0;
     padding: 0;
     border: 5px dashed white;
@@ -128,11 +129,11 @@ main {
     background-color: transparent;
 }
 
-.add_btn:focus {
+.add-btn:focus {
     color: red;
 }
 
-.add_btn:hover {
+.add-btn:hover {
     color: yellow;
 }
 

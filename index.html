@@ -18,7 +18,7 @@
 <body>
     <header>
         <h1>Library</h1>
-        <button>Add <i class="fa fa-plus-circle" aria-hidden="true"></i></button>
+        <button type="button" class="add-btn">Add Book <i class="fa fa-plus-circle" aria-hidden="true"></i></button>
     </header>
     <main>
         <div id="library">
@@ -31,10 +31,29 @@
                     </div>
                 </div>
                 <div id="lib_grid">
-                    <button type="button" class="add_btn">Add Book</button>
+                    <button type="button" class="add-btn">Add Book</button>
                     <div id="overlay">
                         <div id="modal">
                             <button type="button" id="close-modal-btn"> close me bitch</button>
+                            <form id="add-book-form" action="" onsubmit="" autocomplete="off">
+                                <fieldset>
+                                    <legend>Add book</legend>
+                                    <label for="title">Title:</label>
+                                    <input type="text" name="title" id="title">
+                                    <label for="author">Author:</label>
+                                    <input type="text" name="author" id="author">
+                                    <label for="pages">Pages</label>
+                                    <input type="number" name="pages" id="pages">
+                        
+                                    <!-- TODO: make into toggle button -->
+                                    <!-- simple checkbox method -->
+                                    <label for="read">Read:</label>
+                                    <input type="checkbox" name="read" id="read" >
+                        
+                                </fieldset>
+                                <button type="submit">Add</button>
+                                <button type="reset">Reset/Cancel</button>
+                            </form>
                         </div>
                     </div>
                     <!-- <div>
