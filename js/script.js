@@ -61,10 +61,19 @@ function displayBook() {
 const libraryGrid = document.getElementById(`lib_grid`);
 
 function displayCards() {
-    //remove all cards from grid to update
-    while (libraryGrid.firstChild) {
-        libraryGrid.removeChild(libraryGrid.firstChild);
+    //remove all everything from grid to update
+    // while (libraryGrid.firstChild) {
+    //     libraryGrid.removeChild(libraryGrid.firstChild);
+    // }
+
+    //remove all nodes with .card class
+    const sharedClass = document.querySelectorAll(".card");
+    if (sharedClass) {
+        sharedClass.forEach((x) => {
+            libraryGrid.removeChild(x);
+        });
     }
+
     myLibrary.forEach((obj, index) => {
         const card = document.createElement(`div`);
         const title = document.createElement(`p`);
@@ -81,14 +90,23 @@ function displayCards() {
 
         //for much more stylized code insertAdjacentHTML() 
         card.append(title, author, pages, read);
-        libraryGrid.appendChild(card);
-
-
+        libraryGrid.prepend(card);
     });
 
 }
 
+const add_btn_card = document.querySelector(`.add_btn`);
+const overlay = document.getElementById(`overlay`);
+const close_modal_btn = document.getElementById(`close-modal-btn`);
 
+add_btn_card.addEventListener(`click`, (e) => {
+    // alert(`works`);
+    overlay.style.display = `block`;
+});
+
+close_modal_btn.addEventListener(`click`, () => {
+    overlay.style.display = `none`;
+});
 
 
 form.addEventListener(`submit`, (x) => {
