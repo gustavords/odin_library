@@ -107,7 +107,7 @@ main {
 
 #lib_title,
 #lib_grid div {
-    /* border: 1px solid black; */
+    border: 1px solid black;
 }
 
 #lib_title {

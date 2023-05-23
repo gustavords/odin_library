@@ -1,4 +1,4 @@
-const form = document.getElementById("add-book-form");
+const add_book_form = document.getElementById("add-book-form");
 const info = document.getElementById("b_array")
 let string = ``;
 let myLibrary = [];
@@ -65,37 +65,61 @@ const overlay = document.getElementById(`overlay`);
 const add_book_btn = document.querySelectorAll(`.add-btn`);
 const close_modal_btn = document.getElementById(`close-modal-btn`);
 
-
 add_book_btn.forEach((x) => {
     x.addEventListener(`click`, () => {
         overlay.style.display = `block`;
     });
 });
 
-overlay.addEventListener(`click`, () => {
+/**
+ * TODO:Figure ou why bubbling doesn't stop with .stopPropagation() method
+ * 
+ */
+// overlay.addEventListener(`click`, (e) => {
+//     overlay.style.display = `none`;
+//     e.stopPropagation();
+//     console.log(e.target);
+// });
+// document.getElementById(`modal`).
+//     addEventListener(`click `, e => { e.stopPropagation(); });
+
+close_modal_btn.addEventListener(`click`, (e) => {
     overlay.style.display = `none`;
+    e.stopPropagation();
+
 });
-close_modal_btn.addEventListener(`click`, () => {
-    overlay.style.display = `none`;
-});
 
 
 
 
 
 
-function addBookToLibrary(form) {
+function addBookToLibrary() {
     //for testing
-    // console.log(form.querySelector('input[name="title"]').value);
+    // console.log(add_book_form.querySelector('input[name="title"]').value);
 
-    const formData = new FormData(form);
+    const formData = new FormData(add_book_form);
+    // console.log(formData);
+
+    //could possibly do it without instantiating book
+    // formData.prototype = Object.create(Book.prototype); 
+
+    // console.log(`formData.title: ${}`);
+
     const book = new Book(
         formData.get("title"),
         formData.get("author"),
         formData.get("pages"),
         formData.get("read"));
-    // do stuff here
+
+
     myLibrary.push(book);
+
+
+    // formData.title = formData.get("title");
+    // console.log(`formData.title: ${formData.title}`);
+    // console.log(formData);
+    // console.log(book);
 }
 
 /**
@@ -117,28 +141,50 @@ function displayBook() {
 // const crdAuthor = document.querySelector(`.lc_top p:nth-child(2)`);
 // const crdPages = document.querySelector(`.lc_top p:last-child`);
 
-form.addEventListener(`submit`, (x) => {
-    //so form doesn't mess up
+add_book_form.addEventListener(`submit`, (x) => {
+    //so add_book_form doesn't mess up
     x.preventDefault();
-    addBookToLibrary(form);
-    displayBook();
+
+    //ADDS BOOK INTO ARRAY 
+    addBookToLibrary();
+    // displayBook();
+    displayCards();
 
     //for testing
-    // console.log(form.querySelector('input[name="title"]').value);
+    console.log(add_book_form.querySelector('input[name="title"]').value);
 });
 
-form.addEventListener("formdata", (e) => {
+function test() {
+    return `hello`
+}
+function formValidation(formDataObj) {
+    formDataObj.set("title", formDataObj.get("title"));
+    formDataObj.set("author", formDataObj.get("author"));
+    // console.log("-pages type-->" + typeof formDataObj.get("pages"));
+
+    //cannot use arrow function within the second parameter of formData.set
+    formDataObj.set("pages", formDataObj.get("pages"));
+    formDataObj.set("read", formDataObj.get("read"));
+}
+
+// modifies the add_book_form data
+add_book_form.addEventListener(`formdata`, (e) => {
     console.log("formdata fired");
 
-    // modifies the form data
+    //making an object from constructor is not necessary, 
+    //since its made through the formdata event
     const formData = e.formData;
+    console.log(formData);
 
     /**
      * TODO: (validating????)
      */
     // formdata gets modified by the formdata event 
-    formData.set("title", formData.get("title").toLowerCase());
-    formData.set("author", formData.get("author").toLowerCase());
+    // formData.set("title", formData.get("title").toLowerCase());
+    // formData.set("author", formData.get("author").toLowerCase());
+
+    formValidation(formData);
+
 });
 
 
