@@ -142,27 +142,104 @@ function displayBook() {
 // const crdPages = document.querySelector(`.lc_top p:last-child`);
 
 add_book_form.addEventListener(`submit`, (x) => {
-    //so add_book_form doesn't mess up
-    x.preventDefault();
+    //so add_book_form doesn't submit
+    // x.preventDefault();
 
     //ADDS BOOK INTO ARRAY 
-    addBookToLibrary();
+    // addBookToLibrary();
     // displayBook();
-    displayCards();
+    // displayCards();
 
     //for testing
-    console.log(add_book_form.querySelector('input[name="title"]').value);
+    // console.log(add_book_form.querySelector('input[name="title"]').value);
 });
 
-function test() {
-    return `hello`
-}
-function formValidation(formDataObj) {
-    formDataObj.set("title", formDataObj.get("title"));
-    formDataObj.set("author", formDataObj.get("author"));
-    // console.log("-pages type-->" + typeof formDataObj.get("pages"));
 
-    //cannot use arrow function within the second parameter of formData.set
+
+
+
+
+
+//before going into the Array, will be stopped if anything is off
+function formValidation(formSelector) {
+
+}
+
+const validateForm = (formSelector) => {
+    const formElement = document.querySelector(formSelector);
+
+    const validationOptions = [
+        {
+            attribute: `required`,
+            //to check if string is empty, trim to remove white space
+            isValid: (input) => { input.value.trim() !== `` },
+            //makes error message dynamic
+            errorMessage: (input, label) =>  {return `${label.textContent} is required`}, 
+        },
+    ]
+
+    const validateSingleFormGroup = (formGroup) => {
+        const label = formGroup.querySelector(`label`);
+        const input = formGroup.querySelector(`input, textarea`);
+        const errorContainer = formGroup.querySelector(`.error`);
+        const errorIcon = formGroup.querySelector(`.error-icon`);
+        const successIcon = formGroup.querySelector(`.success-icon`);
+
+        //check each input, create validations rule, loop through each rule, send message error depending on erro
+
+        for(const option of validationOptions){
+            if(input.hasAttribute(option.attribute) && !option.isValid(input)){
+                // errorContainer.textContent = option.errorMessage(input, label);
+                errorContainer.textContent = option.errorMessage(input, label);
+            }
+        }
+
+
+    }
+
+    //disables html validation
+    formElement.setAttribute(`novalidate`, ``);
+
+    formElement.addEventListener(`submit`, (event) => {
+        //doesn't submit form
+        event.preventDefault();
+        validateAllFormGroups(formElement)
+    });
+
+    const validateAllFormGroups = (formToValidate) => {
+        const formGroups = Array.from(formToValidate.querySelectorAll(`.formGroup`))
+
+        formGroups.forEach((formGroup) => {
+            validateSingleFormGroup(formGroup);
+        });
+    }
+};
+
+validateForm(`#add-book-form`);
+
+
+
+
+
+
+
+
+//will go into the array, just sprucing it, things like capitalizing/ spacing or removing tags
+function formSanitization(formDataObj) {
+    const title = () => { return formDataObj.get(`title`); }
+    const author = () => {
+        let str = formDataObj.get(`author`);
+        let regEx = /\d/;
+        if (regEx.test(str)) {
+            return `has Number`;
+        }
+        else {
+            return str;
+        }
+    }
+
+    formDataObj.set("title", title());
+    formDataObj.set("author", author());
     formDataObj.set("pages", formDataObj.get("pages"));
     formDataObj.set("read", formDataObj.get("read"));
 }
@@ -173,8 +250,8 @@ add_book_form.addEventListener(`formdata`, (e) => {
 
     //making an object from constructor is not necessary, 
     //since its made through the formdata event
-    const formData = e.formData;
-    console.log(formData);
+    // const formData = e.formData;
+    // console.log(formData);
 
     /**
      * TODO: (validating????)
@@ -183,7 +260,8 @@ add_book_form.addEventListener(`formdata`, (e) => {
     // formData.set("title", formData.get("title").toLowerCase());
     // formData.set("author", formData.get("author").toLowerCase());
 
-    formValidation(formData);
+
+    // formSanitization(formData);
 
 });
 

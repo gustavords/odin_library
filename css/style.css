@@ -199,8 +199,19 @@ main {
     /* flex-direction: column; */
     padding: 2rem 0 2rem 0;
     display: grid;
-    grid-template: 1fr 1fr 1fr 1fr / 20% 80%;
+    grid-template: 1fr 1fr 1fr 1fr / 100%;
     row-gap: 1rem;
+}
+
+.formGroup,
+.formGroup div{
+    display: flex;
+    gap: 1rem;
+}
+
+.formGroup{
+    justify-content: space-evenly;
+    align-items: center;
 }
 
 #read {
