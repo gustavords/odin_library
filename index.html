@@ -6,9 +6,11 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <link href="./assets/fontawesome/css/fontawesome.css" rel="stylesheet">
+    <!-- <link href="./assets/fontawesome/css/fontawesome.css" rel="stylesheet"> -->
     <!-- <link href="./assets/fontawesome/css/brands.css" rel="stylesheet"> -->
-    <link href="./assets/fontawesome/css/solid.css" rel="stylesheet">
+    <!-- <link href="./assets/fontawesome/css/solid.css" rel="stylesheet"> -->
+
+    <script src="https://kit.fontawesome.com/d4a7f25936.js" crossorigin="anonymous"></script>
 
     <link rel="stylesheet" href="./css/style.css" />
     <script async src="./js/script.js"></script>
@@ -41,18 +43,55 @@
                                     <legend>
                                         <h1>Add book</h1>
                                     </legend>
-                                    
+                                    <!-- TODO: remove inputs, no grid just do flex -->
                                     <div id="inputs">
-                                        <label for="title">Title:</label>
-                                        <input type="text" name="title" id="title">
-                                        <label for="author">Author:</label>
-                                        <input type="text" name="author" id="author">
-                                        <label for="pages">Pages</label>
-                                        <input type="number" name="pages" id="pages">
+                                        <div class="formGroup">
+                                            <label for="title">Title:</label>
+                                            <div>
+                                                <input required type="text" name="title" id="title" class="error"
+                                                    minlength="2">
+                                                <span class="error-icon" hidden>
+                                                    <i class="fa fa-check-circle" aria-hidden="true"></i>
+                                                </span>
+                                                <span class="success-icon" hidden>
+                                                    <i class="fa fa-exclamation-circle" aria-hidden="true"></i>
+                                                </span>
+                                                <div class="error">error stuffs</div>
+                                            </div>
+                                        </div>
+                                        <div class="formGroup">
+                                            <label for="author">Author:</label>
+                                            <div>
+                                                <input required type="text" name="author" id="author" class="error"
+                                                    pattern="[a-zA-Z]+*">
+                                                <span class="error-icon" hidden>
+                                                    <i class="fa fa-check-circle" aria-hidden="true"></i>
+                                                </span>
+                                                <span class="success-icon" hidden>
+                                                    <i class="fa fa-exclamation-circle" aria-hidden="true"></i>
+                                                </span>
+                                                <div class="error">error stuffs</div>
+                                            </div>
+                                        </div>
+                                        <div class="formGroup">
+                                            <label for="pages">Pages</label>
+                                            <div>
+                                                <input required type="number" name="pages" id="pages" class="error">
+                                                <span class="error-icon" hidden>
+                                                    <i class="fa fa-check-circle" aria-hidden="true"></i>
+                                                </span>
+                                                <span class="success-icon" hidden>
+                                                    <i class="fa fa-exclamation-circle" aria-hidden="true"></i>
+                                                </span>
+                                                <div class="error">error stuffs</div>
+                                            </div>
+                                        </div>
                                         <!-- TODO: make into toggle button -->
                                         <!-- simple checkbox method -->
-                                        <label for="read">Read:</label>
-                                        <input type="checkbox" name="read" id="read"> 
+                                        <div class="formGroup">
+                                            <label for="read">Read:</label>
+                                            <input type="checkbox" name="read" id="read">
+                                        </div>
                                     </div>
                                 </fieldset>
                                 <br>
