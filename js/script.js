@@ -141,18 +141,18 @@ function displayBook() {
 // const crdAuthor = document.querySelector(`.lc_top p:nth-child(2)`);
 // const crdPages = document.querySelector(`.lc_top p:last-child`);
 
-add_book_form.addEventListener(`submit`, (x) => {
-    //so add_book_form doesn't submit
-    // x.preventDefault();
+// add_book_form.addEventListener(`submit`, (x) => {
+//     //so add_book_form doesn't submit
+//     // x.preventDefault();
 
-    //ADDS BOOK INTO ARRAY 
-    // addBookToLibrary();
-    // displayBook();
-    // displayCards();
+//     //ADDS BOOK INTO ARRAY 
+//     // addBookToLibrary();
+//     // displayBook();
+//     // displayCards();
 
-    //for testing
-    // console.log(add_book_form.querySelector('input[name="title"]').value);
-});
+//     //for testing
+//     // console.log(add_book_form.querySelector('input[name="title"]').value);
+// });
 
 
 
@@ -168,16 +168,68 @@ function formValidation(formSelector) {
 const validateForm = (formSelector) => {
     const formElement = document.querySelector(formSelector);
 
+    //each validation rule
     const validationOptions = [
+        {
+            attribute: `minlength`,
+            //checks if its there and if its the appropriate min length, `minLength` can only be used for <input>
+            isValid: (input) => { return input.value && input.value.length >= +input.minLength },
+            errorMessage: (input, label) => {
+                return `${label.textContent} needs to be at least ${input.minLength}`
+            }
+        },
+        {
+            attribute: `min`,
+            isValid: (input) => { return input.value && +input.value >= +input.getAttribute(`min`) },
+            errorMessage: (input, label) => {
+                return `${label.textContent} needs to be at least ${input.min}`
+            }
+        },
+        {
+            attribute: `customMaxlength`,
+            //checks if its there and if its the appropriate max length, uses .getAttribute() because of custom tag
+            isValid: (input) => { return input.value && input.value.length <= +input.getAttribute(`customMaxLength`) },
+            errorMessage: (input, label) => {
+                return `${label.textContent} too much, can only be ${input.getAttribute(`customMaxLength`)}`
+            }
+        },
+        {
+            attribute: `pattern`,
+            isValid: (input) => {
+
+                //nothing works with .test(), wtf
+
+                // const regEx = new RegExp(input.pattern);
+                // return regEx.test(input.value);
+
+                // let regEx = /[^0-9]/;
+                // console.log(regEx.test(input.value) + input.value );
+                // return regEx.test(input.value)
+
+
+                return input.value.match(/\d/g) === null || (input.value.match(/\d/g).length <= 0);
+            },
+            errorMessage: (input, label) => { return `${label.textContent} must have letters only` },
+        },
+        {
+            attribute: `noLetters`,
+            //works but error message doesnt
+            isValid: (input) => {
+                return input.value.match(/[^\d]/g) === null || (input.value.match(/[^\d]/g).length <= 0)
+            },
+            errorMessage: (input, label) => { return `${label.textContent} must have numbers only` },
+        },
         {
             attribute: `required`,
             //to check if string is empty, trim to remove white space
-            isValid: (input) => { input.value.trim() !== `` },
+            isValid: (input) => { return input.value.trim() !== `` },
             //makes error message dynamic
-            errorMessage: (input, label) =>  {return `${label.textContent} is required`}, 
+            errorMessage: (input, label) => { return `${label.textContent} is required` },
         },
+
     ]
 
+    //where each individual input gets validated
     const validateSingleFormGroup = (formGroup) => {
         const label = formGroup.querySelector(`label`);
         const input = formGroup.querySelector(`input, textarea`);
@@ -185,20 +237,35 @@ const validateForm = (formSelector) => {
         const errorIcon = formGroup.querySelector(`.error-icon`);
         const successIcon = formGroup.querySelector(`.success-icon`);
 
-        //check each input, create validations rule, loop through each rule, send message error depending on erro
-
-        for(const option of validationOptions){
-            if(input.hasAttribute(option.attribute) && !option.isValid(input)){
-                // errorContainer.textContent = option.errorMessage(input, label);
+        //check each input, create validations rules, loop through each rule, send message error depending on error
+        let formGroupError = false;
+        for (const option of validationOptions) {
+            if (input.hasAttribute(option.attribute) && !option.isValid(input)) {
                 errorContainer.textContent = option.errorMessage(input, label);
+                input.classList.add(`error-red`);
+                input.classList.remove(`success-green`);
+                successIcon.setAttribute(`hidden`, ``);
+                errorIcon.removeAttribute(`hidden`);
+                formGroupError = true;
             }
         }
 
+        //clear out and reset message
+        if (!formGroupError) {
+            // console.log(formGroup.querySelector(`.error`));
+            errorContainer.textContent = ``;
+            input.classList.add(`success-green`);
+            input.classList.remove(`error-red`);
+            errorIcon.setAttribute(`hidden`, ``);
+            successIcon.removeAttribute(`hidden`);
+        }
 
-    }
 
-    //disables html validation
+    };
+
+    //disables html validation, so js validation works
     formElement.setAttribute(`novalidate`, ``);
+
 
     formElement.addEventListener(`submit`, (event) => {
         //doesn't submit form
@@ -206,7 +273,9 @@ const validateForm = (formSelector) => {
         validateAllFormGroups(formElement)
     });
 
+    //where all inputs
     const validateAllFormGroups = (formToValidate) => {
+        //makes an  array out of all .formGroup node-list
         const formGroups = Array.from(formToValidate.querySelectorAll(`.formGroup`))
 
         formGroups.forEach((formGroup) => {
@@ -245,25 +314,25 @@ function formSanitization(formDataObj) {
 }
 
 // modifies the add_book_form data
-add_book_form.addEventListener(`formdata`, (e) => {
-    console.log("formdata fired");
+// add_book_form.addEventListener(`formdata`, (e) => {
+//     console.log("formdata fired");
 
-    //making an object from constructor is not necessary, 
-    //since its made through the formdata event
-    // const formData = e.formData;
-    // console.log(formData);
+//     //making an object from constructor is not necessary,
+//     //since its made through the formdata event
+//     // const formData = e.formData;
+//     // console.log(formData);
 
-    /**
-     * TODO: (validating????)
-     */
-    // formdata gets modified by the formdata event 
-    // formData.set("title", formData.get("title").toLowerCase());
-    // formData.set("author", formData.get("author").toLowerCase());
+//     /**
+//      * TODO: (validating????)
+//      */
+//     // formdata gets modified by the formdata event
+//     // formData.set("title", formData.get("title").toLowerCase());
+//     // formData.set("author", formData.get("author").toLowerCase());
 
 
-    // formSanitization(formData);
+//     // formSanitization(formData);
 
-});
+// });
 
 
 // const theHobbit = new Book(`The Hobbit`, `J.R.R. Tolkien`, `295`, `not read yet`);
