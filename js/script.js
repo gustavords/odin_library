@@ -207,24 +207,31 @@ const validateForm = (formSelector) => {
                 // return regEx.test(input.value)
 
 
-                return input.value.match(/\d/g) === null || (input.value.match(/\d/g).length <= 0);
+                return input.value.match(/\d/g) === null || (input.value.match(/\d/g).length === 0);
             },
             errorMessage: (input, label) => { return `${label.textContent} must have letters only` },
         },
-        {
-            attribute: `noLetters`,
-            //works but error message doesnt
-            isValid: (input) => {
-                return input.value.match(/[^\d]/g) === null || (input.value.match(/[^\d]/g).length <= 0)
-            },
-            errorMessage: (input, label) => { return `${label.textContent} must have numbers only` },
-        },
+        
         {
             attribute: `required`,
             //to check if string is empty, trim to remove white space
             isValid: (input) => { return input.value.trim() !== `` },
             //makes error message dynamic
             errorMessage: (input, label) => { return `${label.textContent} is required` },
+        },
+        {
+            attribute: `noLetters`,
+            //works but error message doesnt
+            //should just check if the string is a number or not 
+            isValid: (input) => {
+                return !(input.value === ``);
+
+
+
+                // console.log(input.value.match(/[^\d]/g));
+                // return input.value.match(/^[\d]/g) === null || (input.value.match(/[^\d]/g).length === 0)
+            },
+            errorMessage: (input, label) => { return `${label.textContent} must have numbers only` },
         },
 
     ]
