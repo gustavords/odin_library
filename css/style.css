@@ -105,17 +105,17 @@ main {
 }
 
 
-#lib_title,
+/* #lib_title,
 #lib_grid div {
     border: 1px solid black;
-}
+} */
 
 #lib_title {
     display: flex;
     justify-content: space-between;
 }
 
-#lib_grid {
+#lib-grid {
     /* height: calc(var(--main-height) - (var(--main-height)*.12)); */
     height: clamp(min(10vw, 20rem), 350px, max(90vw, 55rem));
     ;
@@ -136,6 +136,8 @@ main {
     scrollbar-width: thin;
 }
 
+/*--- Add Book Button*/
+
 .add-btn {
     color: white;
     margin: 0;
@@ -153,8 +155,13 @@ main {
     color: yellow;
 }
 
+/*---*/
+
+
+/*--- ADD-BOOK-FORM */
+
 #overlay {
-    /* display: none; */
+    display: none;
     position: fixed;
     top: 0;
     bottom: 0;
@@ -164,6 +171,9 @@ main {
     background-color: rgb(0, 0, 0, .5);
 }
 
+/*
+TODO: figure out max size for resizing to smaller display
+*/
 #modal {
     max-width: 300px;
     height: 20rem;
@@ -180,27 +190,18 @@ main {
 }
 
 
-#modal fieldset {
-    padding: 0;
+#modal fieldset:first-of-type {
+    padding: 2.5rem 0 0 0;
     display: flex;
     flex-direction: column;
     border: 0;
+    gap: 1rem;
 }
-
 
 #close-modal-btn {
     position: absolute;
     right: 3rem;
     top: 3rem;
-}
-
-
-#inputs {
-    /* flex-direction: column; */
-    padding: 2rem 0 2rem 0;
-    display: grid;
-    grid-template: 1fr 1fr 1fr 1fr / 100%;
-    row-gap: 1rem;
 }
 
 .formGroup,
@@ -212,6 +213,7 @@ main {
 .formGroup{
     justify-content: space-evenly;
     align-items: center;
+    
 }
 
 #read {
@@ -225,71 +227,30 @@ main {
 
 #form-btns button {
     flex: 1;
-}
-
-
-
-.lib_card {
-    background-color: mediumorchid;
-    padding: .2rem;
-    display: flex;
-}
-
-.lc_main {
-    background-color: white;
-    display: grid;
-    grid-template: repeat(2, 50%) / repeat(2, 50%);
-    grid-template-areas:
-        "top top"
-        "left right";
-
-    flex: 1;
-    /* width: 90%; */
-}
-
-/* .lc_main div {
-    border: 1px dashed yellowgreen;
-
 } */
+/*---*/
 
-.lc_top {
-    background-color: red;
-    grid-area: top;
+/*--- FORM VALIDATIONS 
+
+.error-red{
+    border-bottom: 1px red solid;
 }
 
-.lc_left {
-    grid-area: left;
+.success-green{
+    border-bottom: 1px greenyellow solid;
 }
 
-.lc_right {
-    grid-area: right;
-    display: grid;
-    grid-template: auto-fit auto-fit / auto-fit auto-fit;
-}
+/*---*/
 
-.read_toggle {
-    grid-row: 1/2;
-    grid-column: 1/3;
-}
 
-.lc_del {
-    grid-row: 2/3;
-    grid-column: 1/2;
-}
+/*--- Book Card */
 
-.lc_vw {
-    grid-row: 2/3;
-    grid-column: 2/3;
+.test{
+    border: 1px solid red;
 }
+/*--- */
 
-.lc_read {
-    background-color: cornflowerblue;
-    writing-mode: vertical-rl;
-    text-orientation: upright;
-    overflow-wrap: break-word;
-    flex: .1;
-    width: 10%;
-}
+
 
 #current_book {
     background-color: mediumspringgreen;

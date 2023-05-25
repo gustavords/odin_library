@@ -84,3 +84,320 @@ JS:
 </div>
 <div class="lc_read">read</div>
 </div>
+
+
+
+
+
+
+/**
+ * TODO: get entries of object to display all (even if i add later on)
+ * code not used, displayCard does this
+ */
+ const info = document.getElementById("b_array")
+ function displayBook() {
+     info.innerText = ``;
+     myLibrary.forEach((book) => {
+         info.innerText +=
+             `title: ${book.title} \n` +
+             `author: ${book.author} \n` +
+             `pages: ${book.pages} \n` +
+             `read: ${book.read} \n` +
+             `info: ${book.info()} \n`;
+     });
+ }
+
+
+
+// modifies the add_book_form data
+add_book_form.addEventListener(`formdata`, (e) => {
+    console.log("formdata fired");
+
+    //making an object from constructor is not necessary,
+    //since its made through the formdata event
+    // const formData = e.formData;
+    // console.log(formData);
+
+    /**
+     * TODO: (validating????)
+     */
+    // formdata gets modified by the formdata event
+    // formData.set("title", formData.get("title").toLowerCase());
+    // formData.set("author", formData.get("author").toLowerCase());
+
+
+    // formSanitization(formData);
+
+});
+
+
+
+
+//will go into the array, just sprucing it, things like capitalizing/ spacing or removing tags
+function formSanitization(formDataObj) {
+    const title = () => { return formDataObj.get(`title`); }
+    const author = () => {
+        let str = formDataObj.get(`author`);
+        let regEx = /\d/;
+        if (regEx.test(str)) {
+            return `has Number`;
+        }
+        else {
+            return str;
+        }
+    }
+
+    formDataObj.set("title", title());
+    formDataObj.set("author", author());
+    formDataObj.set("pages", formDataObj.get("pages"));
+    formDataObj.set("read", formDataObj.get("read"));
+}
+
+
+/**
+ * TODO:Figure ou why bubbling doesn't stop with .stopPropagation() method
+ * 
+ */
+// overlay.addEventListener(`click`, (e) => {
+//     overlay.style.display = `none`;
+//     e.stopPropagation();
+//     console.log(e.target);
+// });
+// document.getElementById(`modal`).
+//     addEventListener(`click `, e => { e.stopPropagation(); });
+
+
+
+
+
+///validates form through javascript
+const validateForm = (formSelector) => {
+    const formElement = document.querySelector(formSelector);
+
+    //each validation rule
+    const validationOptions = [
+        {
+            attribute: `minlength`,
+            //checks if its there and if its the appropriate min length, `minLength` can only be used for <input>
+            isValid: (input) => { return input.value && input.value.length >= +input.minLength },
+            errorMessage: (input, label) => {
+                return `${label.textContent} needs to be at least ${input.minLength}`
+            }
+        },
+        {
+            attribute: `min`,
+            isValid: (input) => { return input.value && +input.value >= +input.getAttribute(`min`) },
+            errorMessage: (input, label) => {
+                return `${label.textContent} needs to be at least ${input.min}`
+            }
+        },
+        {
+            attribute: `customMaxlength`,
+            //checks if its there and if its the appropriate max length, uses .getAttribute() because of custom tag
+            isValid: (input) => { return input.value && input.value.length <= +input.getAttribute(`customMaxLength`)},
+            errorMessage: (input, label) => {
+                return `${label.textContent} too much, can only be ${input.getAttribute(`customMaxLength`)}`
+            }
+        },
+        {
+            attribute: `pattern`,
+            isValid: (input) => {
+
+                //nothing works with .test(), wtf
+
+                // const regEx = new RegExp(input.pattern);
+                // return regEx.test(input.value);
+
+                // let regEx = /[^0-9]/;
+                // console.log(regEx.test(input.value) + input.value );
+                // return regEx.test(input.value)
+
+                return input.value.match(/\d/g) === null || (input.value.match(/\d/g).length === 0);
+            },
+            errorMessage: (input, label) => { return `${label.textContent} must have letters only` },
+        },
+
+        {
+            attribute: `noLetters`,
+            //should just check if the string is a number or not 
+            isValid: (input) => {
+                //has to be empty string instead of !isNaN(), because input type=number is empty if letters are passed
+                //does the same as `required` rule
+                return input.value !== ``;
+            },
+            errorMessage: (input, label) => { return `${label.textContent} must have numbers only` },
+        },
+        {
+            attribute: `required`,
+            //to check if string is empty, trim to remove white space
+            isValid: (input) => { return input.value.trim() !== `` },
+            //makes error message dynamic
+            errorMessage: (input, label) => { return `${label.textContent} is required` },
+        },
+
+
+
+    ]
+
+    //where each individual input gets validated
+    const validateSingleFormGroup = (formGroup) => {
+        const label = formGroup.querySelector(`label`);
+        const input = formGroup.querySelector(`input, textarea`);
+        const errorContainer = formGroup.querySelector(`.error`);
+        const errorIcon = formGroup.querySelector(`.error-icon`);
+        const successIcon = formGroup.querySelector(`.success-icon`);
+
+        //check each input, create validations rules, loop through each rule, send message error depending on error
+        let formGroupError = false;
+        for (const option of validationOptions) {
+            if (input.hasAttribute(option.attribute) && !option.isValid(input)) {
+                errorContainer.textContent = option.errorMessage(input, label);
+                input.classList.add(`error-red`);
+                input.classList.remove(`success-green`);
+                successIcon.setAttribute(`hidden`, ``);
+                errorIcon.removeAttribute(`hidden`);
+                formGroupError = true;
+            }
+
+            if (input.hasAttribute(option.attribute) && !option.isValid(input) && option.test === `number`) {
+                // errorContainer.textContent = option.errorMessage(input, label);
+                // input.classList.add(`error-red`);
+                // input.classList.remove(`success-green`);
+                // successIcon.setAttribute(`hidden`, ``);
+                // errorIcon.removeAttribute(`hidden`);
+                // formGroupError = true;
+            }
+        }
+
+        //clear out and reset message
+        if (!formGroupError) {
+            // console.log(formGroup.querySelector(`.error`));
+            errorContainer.textContent = ``;
+            input.classList.add(`success-green`);
+            input.classList.remove(`error-red`);
+            errorIcon.setAttribute(`hidden`, ``);
+            successIcon.removeAttribute(`hidden`);
+        }
+
+
+    };
+
+    //where all inputs
+    const validateAllFormGroups = (formToValidate) => {
+        //makes an  array out of all .formGroup node-list
+        const formGroups = Array.from(formToValidate.querySelectorAll(`.formGroup`))
+
+        formGroups.forEach((formGroup) => {
+            validateSingleFormGroup(formGroup);
+        });
+    }
+
+    //disables html validation, so js validation works
+    formElement.setAttribute(`novalidate`, ``);
+
+
+    formElement.addEventListener(`submit`, (event) => {
+        //doesn't submit form
+        event.preventDefault();
+        validateAllFormGroups(formElement)
+    });
+
+    
+};
+
+validateForm(`#add-book-form`);
+
+
+
+
+
+
+
+
+ //remove all everything from grid to update
+    // while (libraryGrid.firstChild) {
+    //     libraryGrid.removeChild(libraryGrid.firstChild);
+    // }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    /*--- Book Card */
+
+.test{
+    border: 1px solid red;
+}
+
+/* .lib_card {
+    background-color: mediumorchid;
+    padding: .2rem;
+    display: flex;
+}
+
+.lc_main {
+    background-color: white;
+    display: grid;
+    grid-template: repeat(2, 50%) / repeat(2, 50%);
+    grid-template-areas:
+        "top top"
+        "left right";
+
+    flex: 1;
+    width: 90%;
+} */
+
+/* .lc_main div {
+    border: 1px dashed yellowgreen;
+
+} */
+
+/* .lc_top {
+    background-color: red;
+    grid-area: top;
+}
+
+.lc_left {
+    grid-area: left;
+}
+
+.lc_right {
+    grid-area: right;
+    display: grid;
+    grid-template: auto-fit auto-fit / auto-fit auto-fit;
+}
+
+.read_toggle {
+    grid-row: 1/2;
+    grid-column: 1/3;
+}
+
+.lc_del {
+    grid-row: 2/3;
+    grid-column: 1/2;
+}
+
+.lc_vw {
+    grid-row: 2/3;
+    grid-column: 2/3;
+}
+
+.lc_read {
+    background-color: cornflowerblue;
+    writing-mode: vertical-rl;
+    text-orientation: upright;
+    overflow-wrap: break-word;
+    flex: .1;
+    width: 10%;
+} */
+/*--- */
+
