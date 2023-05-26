@@ -6,11 +6,12 @@ const close_modal_btn = document.getElementById(`close-modal-btn`);
 let string = ``;
 let myLibrary = [];
 
+//for testing
 const theHobbit = new Book(`The Hobbit`, `J.R.R. Tolkien`, `295`, true);
 const theHobbit2 = new Book(`The Hobbit2`, `J.R.R. Tolkien2`, `2952`, false);
 const theHobbit3 = new Book(`The Hobbit3`, `J.R.R. Tolkien3`, `2953`, false);
 
-
+//for testing
 myLibrary.push(theHobbit);
 myLibrary.push(theHobbit2);
 myLibrary.push(theHobbit3);
@@ -43,7 +44,35 @@ function addBookToLibrary() {
 }
 
 /**
+ * 
+ * @param {*} formSelector takes CSS selector name in order to get the DOM Element and create a FormData Object
+ */
+const validateForm = (formSelector) => {
+    const formElement = document.querySelector(formSelector);
+    const formData = new FormData(formElement);
+    console.log(formData.getAll());
+
+};
+
+const isChecked = (checkBoxSelectorId) => {
+    const checkBoxElement = document.getElementById(checkBoxSelectorId);
+    checkBoxElement.addEventListener(`click`, () => {
+        if (checkBoxElement.checked) {
+            checkBoxElement.setAttribute(`checked`, `true`);
+            return checkBoxElement.value = true;
+        }
+        else {
+            checkBoxElement.removeAttribute(`checked`);
+            return checkBoxElement.value = false;;
+        }
+    });
+}
+
+isChecked(`read`);
+
+/**
  * TODO: Spruce it up
+ * ? localStorage (???) issue of CSS not rendering when class is passed after its created
  */
 function displayCards() {
     //remove all nodes with .card class
@@ -63,7 +92,7 @@ function displayCards() {
 
         card.id = `${index}`
         card.className = `card`;
-        // card.classList.add(`card`);  //class is added but style not rendered, so i settled for inline style
+        // card.classList.add(`card`);  //class is added but style not rendered, so i settled for inline style localStorage issue???
         card.style.border = `1px dotted black`;
         title.innerText = `${obj.title}`;
         author.innerText = `${obj.author}`;
@@ -77,21 +106,8 @@ function displayCards() {
 }
 
 
-function eventListener() {
-    add_book_form.addEventListener(`submit`, (x) => {
-        //so add_book_form doesn't submit
-        x.preventDefault();
 
-        //ADDS BOOK INTO ARRAY 
-        addBookToLibrary();
-
-        displayCards();
-
-        //for testing
-        // console.log(add_book_form.querySelector('input[name="title"]').value);
-    })
-
-
+function btnEventListeners() {
     //event listener for all book buttons
     add_book_btn.forEach((button) => {
         button.addEventListener(`click`, () => {
@@ -104,7 +120,18 @@ function eventListener() {
         overlay.style.display = `none`;
         e.stopPropagation();
     });
-
 }
+btnEventListeners();
 
-eventListener();
+add_book_form.addEventListener(`submit`, (x) => {
+    //so add_book_form doesn't submit
+    x.preventDefault();
+
+    validateForm(`#add-book-form`);
+    //ADDS BOOK INTO ARRAY 
+    addBookToLibrary();
+
+    displayCards();
+    //for testing
+    // console.log(add_book_form.querySelector('input[name="title"]').value);
+})
