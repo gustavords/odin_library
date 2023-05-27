@@ -155,6 +155,10 @@ main {
     color: yellow;
 }
 
+.add-btn i {
+    margin-left: 0.25rem;
+}
+
 /*---*/
 
 
@@ -288,10 +292,19 @@ TODO: figure out max size for resizing to smaller display
 
 /*---*/
 
-.error{
+.error,
+#read-info{
     display: flex;
     justify-content: right;
     margin-right: 2rem;
+    font-size: x-small;
+    font-style: italic;
+}
+
+#read-info{
+    font-style: normal;
+    color: rgb(0, 0, 0, .5);
+
 }
 
 /*--- FORM VALIDATIONS 
