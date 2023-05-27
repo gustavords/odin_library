@@ -25,33 +25,132 @@ function Book(title, author, pages, read) {
 
 Book.prototype.info = function () {
     return `${this.title} by ${this.author}, ${this.pages}, ${this.read}`;
-}
+};
 
 /**
- * TODO: - could possibly do it without instantiating book 
- * 
- * currently just adds to libraryArray 
+ * TODO: - could possibly do it without instantiating book
+ *
+ * currently just adds to libraryArray
  * where everything should happen according to the project
  */
-function addBookToLibrary() {
-    const formData = new FormData(add_book_form);
+function addBookToLibrary(formData) {
+
+    // const formData = new FormData(add_book_form);
     const book = new Book(
         formData.get("title"),
         formData.get("author"),
         formData.get("pages"),
-        formData.get("read"));
+        formData.get("read")
+    );
     myLibrary.push(book);
 }
 
 /**
- * 
+ *
  * @param {*} formSelector takes CSS selector name in order to get the DOM Element and create a FormData Object
  */
 const validateForm = (formSelector) => {
     const formElement = document.querySelector(formSelector);
-    const formData = new FormData(formElement);
-    console.log(formData.getAll());
 
+    const inputValidationOptions = [
+        {
+            id: `pages`,
+            isValid: (input) => { //works but overwritten by required
+                return input.valueAsNumber.toString() !== `NaN`;
+            },
+            errorMessage: (input, label) => {
+                return `${label.textContent} can only be numbers`;
+            }
+        },
+        {
+            attribute: `required`,
+            isValid: (input) => {
+                return input.value.trim() !== `` && input.value !== null;
+            },
+            errorMessage: (input, label) => {
+                return `${label.textContent} is required`;
+            },
+        },
+
+    ];
+
+    const validateSingleFormGroup = (formGroup) => {
+        const label = formGroup.querySelector(`label`);
+        const input = formGroup.querySelector(`input, textarea`);
+        const errorContainer = formGroup.querySelector(`.error`);
+        const errorIcon = formGroup.querySelector(`.error-icon`);
+        const successIcon = formGroup.querySelector(`.success-icon`);
+
+        let formGroupError = false;
+        inputValidationOptions.forEach((option) => {
+            if (input.hasAttribute(option.attribute) && !option.isValid(input)) {
+                // console.log(input);
+                errorContainer.textContent = option.errorMessage(input, label);
+                input.classList.add(`error-red`);
+                input.classList.remove(`success-green`);
+                successIcon.setAttribute(`hidden`, `false`);
+                errorIcon.removeAttribute(`hidden`);
+                formGroupError = true;
+            }
+            //for more specific rules
+            // if (input.id === option.id && !option.isValid(input)) {
+            //     errorContainer.textContent = option.errorMessage(input, label);
+            //     formGroupError = true;
+            // }
+        });
+
+        //reset error message
+        if (!formGroupError) {
+            errorContainer.textContent = ``;
+            input.classList.add(`success-green`);
+            input.classList.remove(`error-red`);
+            errorIcon.setAttribute(`hidden`, ``);
+            successIcon.removeAttribute(`hidden`);
+            formGroupError = false;
+        }
+    };
+
+    const validateFormGroups = (formElement) => {
+        const formGroups = Array.from(formElement.querySelectorAll(`.formGroup`));
+        formGroups.forEach((formGroup) => {
+            validateSingleFormGroup(formGroup);
+        });
+    };
+
+    formElement.setAttribute(`novalidate`, ``);
+
+    formElement.addEventListener(`formdata`, (e) => {
+
+        console.log("formdata fired, created through event listener");
+        const formData = e.formData;
+
+        const readIsNULL = () => {
+            if (formData.get("read") === null) {
+                return false;
+            } else {
+                return formData.get("read");
+            }
+        };
+
+        console.log(formData);
+        //sanitization
+        formData.set("title", formData.get("title").toLowerCase());
+        formData.set("read", readIsNULL());
+
+
+    });
+
+    formElement.addEventListener(`submit`, (x) => {
+        //so add_book_form doesn't submit
+        x.preventDefault();
+
+        validateFormGroups(formElement); //should happen before formData is pulled again
+
+        //ADDS BOOK INTO ARRAY
+        addBookToLibrary(new FormData(add_book_form));
+
+        displayCards();
+    });
 };
 
 const isChecked = (checkBoxSelectorId) => {
@@ -59,16 +158,19 @@ const isChecked = (checkBoxSelectorId) => {
     checkBoxElement.addEventListener(`click`, () => {
         if (checkBoxElement.checked) {
             checkBoxElement.setAttribute(`checked`, `true`);
-            return checkBoxElement.value = true;
-        }
-        else {
+            return (checkBoxElement.value = true);
+        } else {
             checkBoxElement.removeAttribute(`checked`);
-            return checkBoxElement.value = false;;
+            return (checkBoxElement.value = false);
         }
     });
-}
-
+};
 isChecked(`read`);
+
+const onlyNumbers = (e) => {
+
+};
+// onkeypress="return (event.charCode == 8 || event.charCode == 0 || event.charCode == 13) ? null : event.charCode >= 48 && event.charCode <= 57" name="itemConsumption"
 
 /**
  * TODO: Spruce it up
@@ -90,7 +192,7 @@ function displayCards() {
         const pages = document.createElement(`p`);
         const read = document.createElement(`p`);
 
-        card.id = `${index}`
+        card.id = `${index}`;
         card.className = `card`;
         // card.classList.add(`card`);  //class is added but style not rendered, so i settled for inline style localStorage issue???
         card.style.border = `1px dotted black`;
@@ -99,13 +201,11 @@ function displayCards() {
         pages.innerText = `${obj.pages}`;
         read.innerText = `${obj.read}`;
 
-        //for much more stylized code insertAdjacentHTML() 
+        //for much more stylized code insertAdjacentHTML()
         card.append(title, author, pages, read);
         lib_grid.prepend(card);
     });
 }
-
-
 
 function btnEventListeners() {
     //event listener for all book buttons
@@ -121,17 +221,9 @@ function btnEventListeners() {
         e.stopPropagation();
     });
 }
+
+
 btnEventListeners();
+validateForm(`#add-book-form`);  ///does it all
 
-add_book_form.addEventListener(`submit`, (x) => {
-    //so add_book_form doesn't submit
-    x.preventDefault();
 
-    validateForm(`#add-book-form`);
-    //ADDS BOOK INTO ARRAY 
-    addBookToLibrary();
-
-    displayCards();
-    //for testing
-    // console.log(add_book_form.querySelector('input[name="title"]').value);
-})

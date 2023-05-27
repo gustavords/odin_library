@@ -205,16 +205,21 @@ TODO: figure out max size for resizing to smaller display
 }
 
 .formGroup,
-.formGroup div{
+.formGroup div {
     display: flex;
     gap: 1rem;
 }
 
-.formGroup{
+.formGroup {
+    flex-direction: column;
     justify-content: space-evenly;
     align-items: center;
-    
+
 }
+
+/* .formGroup label+div{
+    flex-direction: column;
+} */
 
 #read {
     justify-self: left;
@@ -227,7 +232,9 @@ TODO: figure out max size for resizing to smaller display
 
 #form-btns button {
     flex: 1;
-} */
+}
+
+*/
 /*---*/
 
 /*--- FORM VALIDATIONS 
@@ -245,9 +252,10 @@ TODO: figure out max size for resizing to smaller display
 
 /*--- Book Card */
 
-.test{
+.test {
     border: 1px solid red;
 }
+
 /*--- */
 
 
