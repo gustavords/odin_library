@@ -192,11 +192,20 @@ const validateForm = (formSelector) => {
             }
         },
         {
+            //sanitization thing, should never actually happen
+            attribute: `maxlength`,
+            //checks if its there and if its the appropriate max length, uses .getAttribute() because of custom tag
+            isValid: (input) => { return input.validity.tooLong === false },
+            errorMessage: (input, label) => {
+                return `warning: max ${input.maxLength} characters*`
+            }
+        },
+        {
             attribute: `customMaxlength`,
             //checks if its there and if its the appropriate max length, uses .getAttribute() because of custom tag
             isValid: (input) => { return input.value && input.value.length <= +input.getAttribute(`customMaxLength`)},
             errorMessage: (input, label) => {
-                return `${label.textContent} too much, can only be ${input.getAttribute(`customMaxLength`)}`
+                return `less than ${input.getAttribute(`customMaxLength`)} characters only*`
             }
         },
         {
