@@ -175,8 +175,11 @@ main {
 TODO: figure out max size for resizing to smaller display
 */
 #modal {
-    max-width: 300px;
-    height: 20rem;
+    max-width: fit-content;
+    /* max-width: 300px; */
+    height: fit-content;
+    display: flex;
+    flex: 1;
     margin: auto;
     background-color: white;
     position: absolute;
@@ -185,13 +188,15 @@ TODO: figure out max size for resizing to smaller display
     right: 0;
     left: 0;
     /* z-index: 1; */
+    --modal-padding: 2rem;
     border-radius: 1rem;
-    padding: 3rem;
+    padding: var(--modal-padding);
+    overflow: auto;
 }
 
 
 #modal fieldset:first-of-type {
-    padding: 2.5rem 0 0 0;
+    padding: 1.5rem 0 0 0;
     display: flex;
     flex-direction: column;
     border: 0;
@@ -200,15 +205,29 @@ TODO: figure out max size for resizing to smaller display
 
 #close-modal-btn {
     position: absolute;
-    right: 3rem;
-    top: 3rem;
+    right: var(--modal-padding);
+    top: var(--modal-padding);
+    background-color: transparent;
+    border-radius: .2rem;
+    border: none;
+}
+
+#close-modal-btn:hover {
+    background-color: rgb(0,0,0,.3);
+    cursor: pointer;
+}
+
+
+#add_book_form{
+    display: flex;
 }
 
 .formGroup,
 .formGroup div {
-    display: flex;
+    /* display: flex; */
     gap: 1rem;
 }
+
 
 .formGroup {
     flex-direction: column;
@@ -217,9 +236,29 @@ TODO: figure out max size for resizing to smaller display
 
 }
 
-/* .formGroup label+div{
-    flex-direction: column;
-} */
+.formGroup div:nth-child(1){
+    display: flex;
+}
+
+.formGroup div:nth-child(1) label{
+    margin-right: auto;
+}
+
+.formGroup div:nth-child(1) div{
+    display: flex;
+}
+
+
+.formGroup:last-child div:nth-child(1) label{
+    /* background-color: green; */
+    margin-right: .5rem;
+}
+.formGroup:last-child div:nth-child(1) div{
+    /* background-color: #1992D4; */
+    justify-content: left;
+
+}
+
 
 #read {
     justify-self: left;
@@ -228,16 +267,35 @@ TODO: figure out max size for resizing to smaller display
 #form-btns {
     display: flex;
     gap: 1rem;
+    border: none;
+    padding: .5rem 0;
+
 }
 
 #form-btns button {
     flex: 1;
+    border: none;
+    padding: .5rem 0;
+    background-color: var(--btn-bg);
+    border-radius: .2rem;
 }
 
-*/
+#form-btns button:hover {
+    color: yellow;
+    cursor: pointer;
+}
+
+
 /*---*/
 
+.error{
+    display: flex;
+    justify-content: right;
+    margin-right: 2rem;
+}
+
 /*--- FORM VALIDATIONS 
+
 
 .error-red{
     border-bottom: 1px red solid;

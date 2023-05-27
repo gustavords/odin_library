@@ -40,7 +40,7 @@
                                 <button type="button" id="close-modal-btn"> <i class="fa-solid fa-xmark"></i></button>
                                 <fieldset>
                                     <legend>
-                                        <h1>Add Book :</h1>
+                                        <h1>Add Book</h1>
                                     </legend>
                                     <!-- TODO: remove inputs, no grid just do flex -->
                                     <div class="formGroup">
@@ -80,6 +80,7 @@
                                         <div>
 
                                             <label for="pages">Pages</label>
+
                                             <input required type="number" name="pages" id="pages" min="5"
                                                 pattern="[0-9]">
                                             <span class="error-icon" hidden>
@@ -88,6 +89,7 @@
                                             <span class="success-icon" hidden>
                                                 <i class="fa fa-check-circle" aria-hidden="true"></i>
                                             </span>
+
                                         </div>
 
                                         <div class="error"></div>
@@ -96,16 +98,14 @@
                                     <!-- simple checkbox method -->
                                     <div class="formGroup">
                                         <div>
-                                            <label for="read">Read:</label>
+                                            <label for="read">Unread</label>
                                             <input type="checkbox" name="read" id="read" value="false">
-                                            <!-- <span class="error-icon" hidden>
-                                                <i class="fa fa-exclamation-circle" aria-hidden="true"></i>
-                                            </span>
-                                            <span class="success-icon" hidden>
-                                                <i class="fa fa-check-circle" aria-hidden="true"></i>
-                                            </span> -->
+
+                                            <span class="error-icon" hidden></span>
+                                            <span class="success-icon" hidden></span>
+                                            <div class="error"></div>
+
                                         </div>
-                                        <div class="error">testy</div>
                                     </div>
                                 </fieldset>
                                 <br>

@@ -156,11 +156,19 @@ const validateForm = (formSelector) => {
 const isChecked = (checkBoxSelectorId) => {
     const checkBoxElement = document.getElementById(checkBoxSelectorId);
     checkBoxElement.addEventListener(`click`, () => {
+        const labelNodeList = Array.from(document.querySelector(`#read`).labels);
+
         if (checkBoxElement.checked) {
             checkBoxElement.setAttribute(`checked`, `true`);
+            labelNodeList.forEach((label) => {
+                label.textContent = `Read`;
+            });
             return (checkBoxElement.value = true);
         } else {
             checkBoxElement.removeAttribute(`checked`);
+            labelNodeList.forEach((label) => {
+                label.textContent = `Unread`;
+            });
             return (checkBoxElement.value = false);
         }
     });
