@@ -52,23 +52,31 @@ function addBookToLibrary(formData) {
 const validateForm = (formSelector) => {
     const formElement = document.querySelector(formSelector);
 
+    /**
+     * better way to validate???
+     * ?https://www.sitepoint.com/html-forms-constraint-validation-complete-guide/
+     */
     const inputValidationOptions = [
         {
-            id: `pages`,
-            isValid: (input) => { //works but overwritten by required
-                return input.valueAsNumber.toString() !== `NaN`;
-            },
+            attribute: `minlength`,
+            //checks if its there and if its the appropriate min length, `minLength` can only be used for <input>
+            isValid: (input) => { return input.value && input.value.length >= +input.minLength },
+            errorMessage: (input) => {
+                return `requires ${input.minLength} or more characters*`
+            }
+        },
+        {
+            attribute: `min`,
+            isValid: (input) => { return input.value && +input.value >= +input.min },
             errorMessage: (input, label) => {
-                return `${label.textContent} can only be numbers`;
+                return `needs to be at least ${input.min} ${label.textContent.toLowerCase()}*`
             }
         },
         {
             attribute: `required`,
-            isValid: (input) => {
-                return input.value.trim() !== `` && input.value !== null;
-            },
+            isValid: (input) => { return input.value.trim() !== `` && input.value !== null; },
             errorMessage: (input, label) => {
-                return `${label.textContent} is required`;
+                return `${label.textContent} is required*`;
             },
         },
 
@@ -133,8 +141,10 @@ const validateForm = (formSelector) => {
         };
 
         console.log(formData);
+        
         //sanitization
-        formData.set("title", formData.get("title").toLowerCase());
+        formData.set("title", titleCaseWord(formData.get("title")));
+        formData.set("author", capitalizeWord(formData.get("author")));
         formData.set("read", readIsNULL());
 
 
@@ -151,10 +161,38 @@ const validateForm = (formSelector) => {
 
         displayCards();
     });
+
+
+
+
+    ///Sanitization stuff
+    function capitalizeWord(string){
+        const words = string.split(` `);
+        let capStr = ``;
+        words.forEach((word)=>{
+            word = word.charAt(0).toUpperCase() + word.slice(1); 
+            capStr += word + ` `; 
+        });
+        console.log(capStr);
+        return capStr;
+    }
+    function titleCaseWord(string){
+        const words = string.split(` `);
+        let capStr = ``;
+        words.forEach((word)=>{
+            word = word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
+            capStr += word + ` `; 
+        });
+        console.log(capStr);
+        return capStr;
+    }
+
 };
 
 const isChecked = (checkBoxSelectorId) => {
     const checkBoxElement = document.getElementById(checkBoxSelectorId);
+    const readInfo = document.getElementById(`read-info`);
+
     checkBoxElement.addEventListener(`click`, () => {
         const labelNodeList = Array.from(document.querySelector(`#read`).labels);
 
@@ -163,21 +201,34 @@ const isChecked = (checkBoxSelectorId) => {
             labelNodeList.forEach((label) => {
                 label.textContent = `Read`;
             });
+            readInfo.textContent = `I have read this!`;
             return (checkBoxElement.value = true);
         } else {
             checkBoxElement.removeAttribute(`checked`);
             labelNodeList.forEach((label) => {
                 label.textContent = `Unread`;
             });
+            readInfo.textContent = `I haven't read this yet...`;
             return (checkBoxElement.value = false);
         }
     });
 };
 isChecked(`read`);
 
-const onlyNumbers = (e) => {
+const onlyNumbers = (inputSelectorId) => {
+    const inputElement = document.getElementById(inputSelectorId);
 
+    inputElement.addEventListener(`keydown`, (e)=> {
+        if((e.key >= 0 && e.key <= 9) || e.key === `Backspace` || e.key === `Tab` || e.key === `Enter`){
+            // console.log(e.key);
+            // allow
+        }
+        else{
+            e.preventDefault();
+        }
+    });
 };
+onlyNumbers(`pages`);
 // onkeypress="return (event.charCode == 8 || event.charCode == 0 || event.charCode == 13) ? null : event.charCode >= 48 && event.charCode <= 57" name="itemConsumption"
 
 /**
