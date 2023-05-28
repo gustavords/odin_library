@@ -107,7 +107,7 @@ const validateForm = (formSelector) => {
                 errorIcon.removeAttribute(`hidden`);
                 formGroupError = true;
             }
-            if(input.value === null){
+            if (input.value === null) {
                 isGroupValid = false
             }
         });
@@ -128,9 +128,24 @@ const validateForm = (formSelector) => {
 
     const validateFormGroups = (formElement) => {
         const formGroups = Array.from(formElement.querySelectorAll(`.formGroup`));
+        const isFormValidArr = [];
+        let isFormValid = ``;
         formGroups.forEach((formGroup) => {
             validateSingleFormGroup(formGroup);
+            isFormValidArr.push(validateSingleFormGroup(formGroup));
+
         });
+
+        isFormValid = isFormValidArr.find(x => (x === false));
+
+        if (isFormValid === undefined) {
+            isFormValid = true;
+        }
+        // not necessary since if found its already a false boolean
+        // else {
+        //     isFormValid = false;
+        // }
+        return isFormValid;
     };
 
     formElement.setAttribute(`novalidate`, ``);
@@ -164,29 +179,29 @@ const validateForm = (formSelector) => {
 
         validateFormGroups(formElement); //should happen before formData is pulled again
 
-        //ADDS BOOK INTO ARRAY
-        addBookToLibrary(new FormData(add_book_form));
-
-        displayCards();
+        if (validateFormGroups(formElement)) {
+            addBookToLibrary(new FormData(add_book_form));
+            displayCards();
+        }
     });
 
     ///Sanitization stuff
-    function capitalizeWord(string){
+    function capitalizeWord(string) {
         const words = string.split(` `);
         let capStr = ``;
-        words.forEach((word)=>{
-            word = word.charAt(0).toUpperCase() + word.slice(1); 
-            capStr += word + ` `; 
+        words.forEach((word) => {
+            word = word.charAt(0).toUpperCase() + word.slice(1);
+            capStr += word + ` `;
         });
         console.log(capStr);
         return capStr;
     }
-    function titleCaseWord(string){
+    function titleCaseWord(string) {
         const words = string.split(` `);
         let newStr = ``;
-        words.forEach((word)=>{
+        words.forEach((word) => {
             word = word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
-            newStr += word + ` `; 
+            newStr += word + ` `;
         });
         console.log(newStr);
         return newStr;
@@ -226,12 +241,12 @@ isChecked(`read`);
 const onlyNumbers = (inputSelectorId) => {
     const inputElement = document.getElementById(inputSelectorId);
 
-    inputElement.addEventListener(`keydown`, (e)=> {
-        if((e.key >= 0 && e.key <= 9) || e.key === `Backspace` || e.key === `Tab` || e.key === `Enter`){
+    inputElement.addEventListener(`keydown`, (e) => {
+        if ((e.key >= 0 && e.key <= 9) || e.key === `Backspace` || e.key === `Tab` || e.key === `Enter`) {
             // console.log(e.key);
             // allow
         }
-        else{
+        else {
             e.preventDefault();
         }
     });
