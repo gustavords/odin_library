@@ -82,6 +82,11 @@ const validateForm = (formSelector) => {
 
     ];
 
+    /**
+     * 
+     * @param {*} formGroup validates and display errors on particular group
+     * @returns Boolean value determining if the particular group is valid 
+     */
     const validateSingleFormGroup = (formGroup) => {
         const label = formGroup.querySelector(`label`);
         const input = formGroup.querySelector(`input, textarea`);
@@ -89,10 +94,12 @@ const validateForm = (formSelector) => {
         const errorIcon = formGroup.querySelector(`.error-icon`);
         const successIcon = formGroup.querySelector(`.success-icon`);
 
+        let isGroupValid = true;
         let formGroupError = false;
         inputValidationOptions.forEach((option) => {
             if (input.hasAttribute(option.attribute) && !option.isValid(input)) {
-                // console.log(input);
+                console.log(input); //
+                isGroupValid = false
                 errorContainer.textContent = option.errorMessage(input, label);
                 input.classList.add(`error-red`);
                 input.classList.remove(`success-green`);
@@ -100,11 +107,9 @@ const validateForm = (formSelector) => {
                 errorIcon.removeAttribute(`hidden`);
                 formGroupError = true;
             }
-            //for more specific rules
-            // if (input.id === option.id && !option.isValid(input)) {
-            //     errorContainer.textContent = option.errorMessage(input, label);
-            //     formGroupError = true;
-            // }
+            if(input.value === null){
+                isGroupValid = false
+            }
         });
 
         //reset error message
@@ -116,6 +121,9 @@ const validateForm = (formSelector) => {
             successIcon.removeAttribute(`hidden`);
             formGroupError = false;
         }
+        console.log(`isFormValid: ${isGroupValid}`)
+
+        return isGroupValid;
     };
 
     const validateFormGroups = (formElement) => {
@@ -141,7 +149,7 @@ const validateForm = (formSelector) => {
         };
 
         console.log(formData);
-        
+
         //sanitization
         formData.set("title", titleCaseWord(formData.get("title")));
         formData.set("author", capitalizeWord(formData.get("author")));
@@ -162,9 +170,6 @@ const validateForm = (formSelector) => {
         displayCards();
     });
 
-
-
-
     ///Sanitization stuff
     function capitalizeWord(string){
         const words = string.split(` `);
@@ -178,16 +183,19 @@ const validateForm = (formSelector) => {
     }
     function titleCaseWord(string){
         const words = string.split(` `);
-        let capStr = ``;
+        let newStr = ``;
         words.forEach((word)=>{
             word = word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
-            capStr += word + ` `; 
+            newStr += word + ` `; 
         });
-        console.log(capStr);
-        return capStr;
+        console.log(newStr);
+        return newStr;
     }
 
 };
+
+
+
 
 const isChecked = (checkBoxSelectorId) => {
     const checkBoxElement = document.getElementById(checkBoxSelectorId);
