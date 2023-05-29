@@ -58,6 +58,14 @@ const validateForm = (formSelector) => {
      */
     const inputValidationOptions = [
         {
+            attribute: `noDecimal`,
+            //checks if its there and if its the appropriate min length, `minLength` can only be used for <input>
+            isValid: (input) => { return input.value && +input.value % 1 === 0},
+            errorMessage: (input, label) => {
+                return `${label.textContent} cannot have decimals*`
+            }
+        },
+        {
             attribute: `minlength`,
             //checks if its there and if its the appropriate min length, `minLength` can only be used for <input>
             isValid: (input) => { return input.value && input.value.length >= +input.minLength },
@@ -133,7 +141,6 @@ const validateForm = (formSelector) => {
         formGroups.forEach((formGroup) => {
             validateSingleFormGroup(formGroup);
             isFormValidArr.push(validateSingleFormGroup(formGroup));
-
         });
 
         isFormValid = isFormValidArr.find(x => (x === false));
@@ -155,12 +162,8 @@ const validateForm = (formSelector) => {
         console.log("formdata fired, created through event listener");
         const formData = e.formData;
 
-        const readIsNULL = () => {
-            if (formData.get("read") === null) {
-                return false;
-            } else {
-                return formData.get("read");
-            }
+        const isNotNull = (input) => {
+            return formData.get(input) === null ? false : formData.get(input);
         };
 
         console.log(formData);
@@ -168,8 +171,8 @@ const validateForm = (formSelector) => {
         //sanitization
         formData.set("title", titleCaseWord(formData.get("title")));
         formData.set("author", capitalizeWord(formData.get("author")));
-        formData.set("read", readIsNULL());
-
+        formData.set("pages", +formData.get("pages")); //removes extra zeros through unary plus operator
+        formData.set("read", isNotNull(`read`) === `true` ? `Read` : `Unread`);
 
     });
 
@@ -251,7 +254,7 @@ const onlyNumbers = (inputSelectorId) => {
         }
     });
 };
-onlyNumbers(`pages`);
+// onlyNumbers(`pages`);
 // onkeypress="return (event.charCode == 8 || event.charCode == 0 || event.charCode == 13) ? null : event.charCode >= 48 && event.charCode <= 57" name="itemConsumption"
 
 /**
