@@ -16,6 +16,7 @@ myLibrary.push(theHobbit);
 myLibrary.push(theHobbit2);
 myLibrary.push(theHobbit3);
 
+
 function Book(title, author, pages, read) {
     this.title = title;
     this.author = author;
@@ -26,6 +27,7 @@ function Book(title, author, pages, read) {
 Book.prototype.info = function () {
     return `${this.title} by ${this.author}, ${this.pages}, ${this.read}`;
 };
+
 
 /**
  * TODO: - could possibly do it without instantiating book
@@ -60,25 +62,27 @@ const validateForm = (formSelector) => {
 
         {
             attribute: `noPunctuationMarks`,
-            isValid: (input) => { 
+            isValid: (input) => {
                 const regEx = /[\~!@#$%\^<>/\\*\(\)\[\]\{\}\+\-\:\=\|\/]/;
-                return input.value && regEx.test(input.value) === false},
+                return input.value && regEx.test(input.value) === false
+            },
             errorMessage: (input, label) => {
                 return `Only sp.characters allowed [. , ; \`  " &]`
             }
         },
         {
             attribute: `noNumber`,
-            isValid: (input) => { 
+            isValid: (input) => {
                 const regEx = /\d/;
-                return input.value && regEx.test(input.value) === false},
+                return input.value && regEx.test(input.value) === false
+            },
             errorMessage: (input, label) => {
                 return `${label.textContent} cannot have numbers*`
             }
         },
         {
             attribute: `noDecimal`,
-            isValid: (input) => { return input.value && +input.value % 1 === 0},
+            isValid: (input) => { return input.value && +input.value % 1 === 0 },
             errorMessage: (input, label) => {
                 return `${label.textContent} cannot have decimals*`
             }
@@ -201,6 +205,7 @@ const validateForm = (formSelector) => {
         if (validateFormGroups(formElement)) {
             addBookToLibrary(new FormData(add_book_form));
             displayCards();
+            add_book_form.reset();
         }
     });
 
@@ -228,6 +233,45 @@ const validateForm = (formSelector) => {
 
 };
 
+const editBook = () => {
+    //first get the books id
+    const books = document.querySelectorAll(`.card`);
+    books.forEach((book) => {
+        book.addEventListener(`click`, () => {
+            console.log(book.id);
+            //get book in array through index === id
+            let theBook = myLibrary[book.id];
+            console.log(`---->` + theBook.read);
+
+            //open up book info already in form
+            overlay.style.display = `block`;
+            add_book_form.querySelector(`input[id="title"]`).value = `${theBook.title}`;
+            add_book_form.querySelector(`input[id="author"]`).value = `${theBook.author}`;
+            add_book_form.querySelector(`input[id="pages"]`).value = `${theBook.pages}`;
+            (theBook.read === `Read` || theBook.read === true) ?
+                add_book_form.querySelector(`input[id="read"]`).checked = true :
+                add_book_form.querySelector(`input[id="read"]`).checked = false;
+            ;
+
+
+        });
+
+    });
+
+    add_book_form.querySelector(`button[type="submit"]`).addEventListener(`click`, (e) => {
+        // e.preventDefault();
+        btnTest();
+    });
+
+
+
+
+    //save button that only changes once something has been edited
+};
+
+function btnTest() {
+    console.log(`kawabunga`);
+}
 
 
 
@@ -295,7 +339,7 @@ function displayCards() {
         card.id = `${index}`;
         card.className = `card`;
         // card.classList.add(`card`);  //class is added but style not rendered, so i settled for inline style localStorage issue???
-        card.style.border = `1px dotted black`;
+        // card.style.border = `1px dotted black`;
         title.innerText = `${obj.title}`;
         author.innerText = `${obj.author}`;
         pages.innerText = `${obj.pages}`;
@@ -304,7 +348,16 @@ function displayCards() {
         //for much more stylized code insertAdjacentHTML()
         card.append(title, author, pages, read);
         lib_grid.prepend(card);
+
+        //can only bind events and css-styling once element has been fully added into HTML
+        card.classList.add(`test`)
+        /**
+         * TODO: - make it a button w/ an icon
+         */
+        card.addEventListener(`click`, editBook());
+
     });
+
 }
 
 function btnEventListeners() {
@@ -318,6 +371,7 @@ function btnEventListeners() {
     //event listener for close modal button
     close_modal_btn.addEventListener(`click`, (e) => {
         overlay.style.display = `none`;
+        // add_book_form.reset();
         e.stopPropagation();
     });
 }
@@ -325,5 +379,4 @@ function btnEventListeners() {
 
 btnEventListeners();
 validateForm(`#add-book-form`);  ///does it all
-
-
+displayCards(); //testing
