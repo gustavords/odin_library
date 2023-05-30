@@ -57,6 +57,17 @@ const validateForm = (formSelector) => {
      * ?https://www.sitepoint.com/html-forms-constraint-validation-complete-guide/
      */
     const inputValidationOptions = [
+        
+        {
+            attribute: `noNumber`,
+            //checks if its there and if its the appropriate min length, `minLength` can only be used for <input>
+            isValid: (input) => { 
+                const regEx = /\d/;
+                return input.value && regEx.test(input.value) === false},
+            errorMessage: (input, label) => {
+                return `${label.textContent} cannot have numbers*`
+            }
+        },
         {
             attribute: `noDecimal`,
             //checks if its there and if its the appropriate min length, `minLength` can only be used for <input>
@@ -148,7 +159,7 @@ const validateForm = (formSelector) => {
         if (isFormValid === undefined) {
             isFormValid = true;
         }
-        // not necessary since if found its already a false boolean
+        // not necessary since if found IsFormValid return value is already a false boolean
         // else {
         //     isFormValid = false;
         // }
@@ -165,8 +176,6 @@ const validateForm = (formSelector) => {
         const isNotNull = (input) => {
             return formData.get(input) === null ? false : formData.get(input);
         };
-
-        console.log(formData);
 
         //sanitization
         formData.set("title", titleCaseWord(formData.get("title")));
@@ -254,8 +263,7 @@ const onlyNumbers = (inputSelectorId) => {
         }
     });
 };
-// onlyNumbers(`pages`);
-// onkeypress="return (event.charCode == 8 || event.charCode == 0 || event.charCode == 13) ? null : event.charCode >= 48 && event.charCode <= 57" name="itemConsumption"
+onlyNumbers(`pages`);
 
 /**
  * TODO: Spruce it up
