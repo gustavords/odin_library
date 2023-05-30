@@ -57,10 +57,18 @@ const validateForm = (formSelector) => {
      * ?https://www.sitepoint.com/html-forms-constraint-validation-complete-guide/
      */
     const inputValidationOptions = [
-        
+
+        {
+            attribute: `noPunctuationMarks`,
+            isValid: (input) => { 
+                const regEx = /[\~!@#$%\^<>/\\*\(\)\[\]\{\}\+\-\:\=\|\/]/;
+                return input.value && regEx.test(input.value) === false},
+            errorMessage: (input, label) => {
+                return `Only sp.characters allowed [. , ; \`  " &]`
+            }
+        },
         {
             attribute: `noNumber`,
-            //checks if its there and if its the appropriate min length, `minLength` can only be used for <input>
             isValid: (input) => { 
                 const regEx = /\d/;
                 return input.value && regEx.test(input.value) === false},
@@ -70,7 +78,6 @@ const validateForm = (formSelector) => {
         },
         {
             attribute: `noDecimal`,
-            //checks if its there and if its the appropriate min length, `minLength` can only be used for <input>
             isValid: (input) => { return input.value && +input.value % 1 === 0},
             errorMessage: (input, label) => {
                 return `${label.textContent} cannot have decimals*`
@@ -119,7 +126,7 @@ const validateForm = (formSelector) => {
             if (input.hasAttribute(option.attribute) && !option.isValid(input)) {
                 console.log(input); //
                 isGroupValid = false
-                errorContainer.textContent = option.errorMessage(input, label);
+                errorContainer.textContent = option.errorMessage(input, label) + `\n`;
                 input.classList.add(`error-red`);
                 input.classList.remove(`success-green`);
                 successIcon.setAttribute(`hidden`, `false`);
