@@ -1,15 +1,17 @@
 const add_book_form = document.getElementById(`add-book-form`);
 const lib_grid = document.getElementById(`lib-grid`);
 const overlay = document.getElementById(`overlay`);
-const add_book_btn = document.querySelectorAll(`.add-btn`);
+const add_book_btns = document.querySelectorAll(`.add-btn`);
+const edit_book_btn = document.querySelector(`#edit-btn`);
+
 const close_modal_btn = document.getElementById(`close-modal-btn`);
 let string = ``;
 let myLibrary = [];
 
 //for testing
 const theHobbit = new Book(`The Hobbit`, `J.R.R. Tolkien`, `295`, true);
-const theHobbit2 = new Book(`The Hobbit2`, `J.R.R. Tolkien2`, `2952`, false);
-const theHobbit3 = new Book(`The Hobbit3`, `J.R.R. Tolkien3`, `2953`, false);
+const theHobbit2 = new Book(`The Hobbit2`, `J.R.`, `2952`, false);
+const theHobbit3 = new Book(`The Hobbit3`, `J.R.R.R.`, `29853`, false);
 
 //for testing
 myLibrary.push(theHobbit);
@@ -35,7 +37,7 @@ Book.prototype.info = function () {
  * currently just adds to libraryArray
  * where everything should happen according to the project
  */
-function addBookToLibrary(formData) {
+function addBookToLibrary(formData, location = ``) {
 
     // const formData = new FormData(add_book_form);
     const book = new Book(
@@ -44,6 +46,12 @@ function addBookToLibrary(formData) {
         formData.get("pages"),
         formData.get("read")
     );
+
+    // if (location >= 0 && typeof location !== `string`) {
+    //     console.log(`here`)
+    //     // myLibrary[location] = book;
+    // }
+
     myLibrary.push(book);
 }
 
@@ -67,7 +75,7 @@ const validateForm = (formSelector) => {
                 return input.value && regEx.test(input.value) === false
             },
             errorMessage: (input, label) => {
-                return `Only sp.characters allowed [. , ; \`  " &]`
+                return `only sp.characters allowed [. , ; \`  " &]`
             }
         },
         {
@@ -200,8 +208,8 @@ const validateForm = (formSelector) => {
         //so add_book_form doesn't submit
         x.preventDefault();
 
-        validateFormGroups(formElement); //should happen before formData is pulled again
-
+        // validateFormGroups(formElement); //should happen before formData is pulled again
+        // 
         if (validateFormGroups(formElement)) {
             addBookToLibrary(new FormData(add_book_form));
             displayCards();
@@ -233,35 +241,98 @@ const validateForm = (formSelector) => {
 
 };
 
+/**
+ * TODO: MUST DO CARD LAYOUT TO FIgure out proper event handling area
+ */
 const editBook = () => {
     //first get the books id
-    const books = document.querySelectorAll(`.card`);
-    books.forEach((book) => {
-        book.addEventListener(`click`, () => {
-            console.log(book.id);
-            //get book in array through index === id
-            let theBook = myLibrary[book.id];
-            console.log(`---->` + theBook.read);
+    // console.log(book.target)
+    // console.log(e.target);
+    console.log(`please work`);
+    lib_grid.addEventListener(`click`, (e) => {
+        console.log(e.target.parentElement.id);
 
-            //open up book info already in form
-            overlay.style.display = `block`;
-            add_book_form.querySelector(`input[id="title"]`).value = `${theBook.title}`;
-            add_book_form.querySelector(`input[id="author"]`).value = `${theBook.author}`;
-            add_book_form.querySelector(`input[id="pages"]`).value = `${theBook.pages}`;
-            (theBook.read === `Read` || theBook.read === true) ?
-                add_book_form.querySelector(`input[id="read"]`).checked = true :
-                add_book_form.querySelector(`input[id="read"]`).checked = false;
-            ;
+        if (e.target && e.target.matches(`div.card p`)) {
+            console.log(`almost worked`)
+            if (e.target && e.target.matches(`div.card`)) {
+                console.log(`worked`)
+            }
+        }
 
-
-        });
 
     });
 
-    add_book_form.querySelector(`button[type="submit"]`).addEventListener(`click`, (e) => {
-        // e.preventDefault();
-        btnTest();
-    });
+
+    // //sets the form up for edit
+    // // x.preventDefault();
+    // add_book_form.querySelector(`button[type="submit"]`).setAttribute(`hidden`, ``);
+    // edit_book_btn.removeAttribute(`hidden`);
+
+    // // bookID = book.id;
+    // // console.log(`bookId: ` + bookID);
+    // console.log(`book: ` + book);
+    // //get book in array through index === id
+    // let theBook = myLibrary[book.id];
+
+    // //open up book info already in form
+    // overlay.style.display = `block`;
+    // add_book_form.querySelector(`input[id="title"]`).value = `${theBook.title}`;
+    // add_book_form.querySelector(`input[id="author"]`).value = `${theBook.author}`;
+    // add_book_form.querySelector(`input[id="pages"]`).value = `${theBook.pages}`;
+    // (theBook.read === `Read` || theBook.read === true) ?
+    //     add_book_form.querySelector(`input[id="read"]`).checked = true :
+    //     add_book_form.querySelector(`input[id="read"]`).checked = false;
+    // ;
+
+
+
+    // const books = document.querySelectorAll(`.card`);
+    // let bookID = ``;
+    // books.forEach((book, index) => {
+    //     book.addEventListener(`click`, () => {
+    //         //sets the form up for edit
+    //         // x.preventDefault();
+    //         add_book_form.querySelector(`button[type="submit"]`).setAttribute(`hidden`, ``);
+    //         edit_book_btn.removeAttribute(`hidden`);
+
+    //         bookID = book.id;
+    //         console.log(`bookId: ` + bookID);
+    //         console.log(`index: ` + index);
+    //         // get book in array through index === id
+    //         let theBook = myLibrary[book.id];
+
+    //         // //open up book info already in form
+    //         overlay.style.display = `block`;
+    //         add_book_form.querySelector(`input[id="title"]`).value = `${theBook.title}`;
+    //         add_book_form.querySelector(`input[id="author"]`).value = `${theBook.author}`;
+    //         add_book_form.querySelector(`input[id="pages"]`).value = `${theBook.pages}`;
+    //         (theBook.read === `Read` || theBook.read === true) ?
+    //             add_book_form.querySelector(`input[id="read"]`).checked = true :
+    //             add_book_form.querySelector(`input[id="read"]`).checked = false;
+    //         ;
+    //     });
+
+    // });
+
+    // let theBook = myLibrary[+bookID];
+    // console.log(theBook);
+
+    //open up book info already in form
+    // add_book_form.querySelector(`input[id="title"]`).value = `${theBook.title}`;
+    // add_book_form.querySelector(`input[id="author"]`).value = `${theBook.author}`;
+    // add_book_form.querySelector(`input[id="pages"]`).value = `${theBook.pages}`;
+    // (theBook.read === `Read` || theBook.read === true) ?
+    //     add_book_form.querySelector(`input[id="read"]`).checked = true :
+    //     add_book_form.querySelector(`input[id="read"]`).checked = false;
+    // ;
+
+    // edit_book_btn.addEventListener(`click`, (e) => {
+
+    //     btnTest();
+    //     addBookToLibrary(new FormData(add_book_form), +bookID);
+    //     displayCards();
+    //     add_book_form.reset();
+    // });
 
 
 
@@ -269,9 +340,11 @@ const editBook = () => {
     //save button that only changes once something has been edited
 };
 
-function btnTest() {
-    console.log(`kawabunga`);
-}
+// function btnTest() {
+//     console.log(`kawabunga`);
+
+
+// }
 
 
 
@@ -354,24 +427,32 @@ function displayCards() {
         /**
          * TODO: - make it a button w/ an icon
          */
-        card.addEventListener(`click`, editBook());
-
+        // card.addEventListener(`click`, editBook());
     });
+    // card.addEventListener(`click`, editBook());
+    const books = document.querySelectorAll(".card");
+
+    // books.forEach((book) => {
+    //     book.addEventListener(`click`, editBook());
+    // });
 
 }
 
 function btnEventListeners() {
     //event listener for all book buttons
-    add_book_btn.forEach((button) => {
+    add_book_btns.forEach((button) => {
         button.addEventListener(`click`, () => {
+            add_book_form.querySelector(`button[type="submit"]`).removeAttribute(`hidden`);
+            edit_book_btn.setAttribute(`hidden`, ``);
             overlay.style.display = `block`;
+
         });
     });
 
     //event listener for close modal button
     close_modal_btn.addEventListener(`click`, (e) => {
         overlay.style.display = `none`;
-        // add_book_form.reset();
+        add_book_form.reset();
         e.stopPropagation();
     });
 }
@@ -380,3 +461,4 @@ function btnEventListeners() {
 btnEventListeners();
 validateForm(`#add-book-form`);  ///does it all
 displayCards(); //testing
+editBook();
