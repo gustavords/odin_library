@@ -33,17 +33,30 @@
                     </div>
                 </div>
                 <div id="lib-grid">
-                    <button type="button" class="add-btn">Add Book <i class="fa fa-plus-circle" aria-hidden="true" ></i></button>
+                    <button type="button" class="add-btn">Add Book <i class="fa fa-plus-circle"
+                            aria-hidden="true"></i></button>
+                    <div style="border: 1px green dashed; padding:.2rem;">Parent
+                        <div style="background-color: yellow; padding:.2rem;">Child
+                            <div style="background-color: blueviolet; padding:.2rem;">Child of Child</div>
+                        </div>
+                        <div style="background-color: yellow; padding:.2rem;">Child
+                            <div style="background-color: blueviolet; padding:.2rem;">Child of Child</div>
+                        </div>
+                    </div>
+                    
                     <div id="overlay">
                         <div id="modal">
                             <form id="add-book-form" action="" onsubmit="" autocomplete="off">
                                 <button type="button" id="close-modal-btn"> <i class="fa-solid fa-xmark"></i></button>
                                 <fieldset>
-                                    <legend><h1>Add Book</h1></legend>
+                                    <legend>
+                                        <h1>Add Book</h1>
+                                    </legend>
                                     <div class="formGroup">
                                         <div>
                                             <label for="title">Title</label>
-                                            <input required type="text" name="title" id="title" minlength="2" maxlength="150">
+                                            <input required type="text" name="title" id="title" minlength="2"
+                                                maxlength="150">
                                             <span class="error-icon" hidden>
                                                 <i class="fa fa-exclamation-circle" aria-hidden="true"></i>
                                             </span>
@@ -108,7 +121,8 @@
                         </div>
                     </div>
                 </div>
-                <button type="button" class="add-btn">Add Book <i class="fa fa-plus-circle" aria-hidden="true" ></i></button>
+                <button type="button" class="add-btn">Add Book <i class="fa fa-plus-circle"
+                        aria-hidden="true"></i></button>
 
             </div>
         </div>

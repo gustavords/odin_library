@@ -242,22 +242,39 @@ const validateForm = (formSelector) => {
 };
 
 /**
- * TODO: MUST DO CARD LAYOUT TO FIgure out proper event handling area
+ * TODO: MUST DO CARD LAYOUT TO FIgure out proper event handling area, or make it a fucking button
+ * Problem is event delegation only really works one parent up
+ * and its not possible to give the .card class the event since it loops do to how its generated
  */
 const editBook = () => {
     //first get the books id
     // console.log(book.target)
     // console.log(e.target);
-    console.log(`please work`);
+    // document.querySelectorAll(`.card`).forEach((card)=>{
+    //     card.addEventListener(`click`, ()=>{
+    //         console.log(card.id)
+    //     });
+    // });
+    // console.log(`please work`);
     lib_grid.addEventListener(`click`, (e) => {
-        console.log(e.target.parentElement.id);
+        // console.log(e.target.parentElement.id);
+        // console.log(typeof +e.target.parentElement.id);
+        // console.log(e.target);
 
-        if (e.target && e.target.matches(`div.card p`)) {
-            console.log(`almost worked`)
-            if (e.target && e.target.matches(`div.card`)) {
-                console.log(`worked`)
-            }
+        if (e.target && +e.target.parentElement.id >= 0 && e.target.parentElement.id !== ``) {
+            console.log(e.target.parentElement.id);
+
         }
+        // const card = lib_grid.querySelector(`div.card`);
+        // card.addEventListener(`click`, (e)=> {
+        //     console.log(`etarget: ` + e.target)
+        // });
+        // if (e.target && e.target.matches(`div.card p`)) {
+        //     console.log(`almost worked`)
+        //     if (e.target && e.target.matches(`div.card`)) {
+        //         console.log(`worked`)
+        //     }
+        // }
 
 
     });
@@ -430,7 +447,7 @@ function displayCards() {
         // card.addEventListener(`click`, editBook());
     });
     // card.addEventListener(`click`, editBook());
-    const books = document.querySelectorAll(".card");
+    // const books = document.querySelectorAll(".card");
 
     // books.forEach((book) => {
     //     book.addEventListener(`click`, editBook());
@@ -460,5 +477,5 @@ function btnEventListeners() {
 
 btnEventListeners();
 validateForm(`#add-book-form`);  ///does it all
-displayCards(); //testing
+// displayCards(); //testing
 editBook();
