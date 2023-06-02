@@ -10,8 +10,8 @@ let myLibrary = [];
 
 //for testing
 const theHobbit = new Book(`The Hobbit`, `J.R.R. Tolkien`, `295`, true);
-const theHobbit2 = new Book(`The Hobbit2`, `J.R.`, `2952`, false);
-const theHobbit3 = new Book(`The Hobbit3`, `J.R.R.R.`, `29853`, false);
+const theHobbit2 = new Book(`The Hobbit 2`, `J.R.sasaswqed23d32d22d`, `2952`, false);
+const theHobbit3 = new Book(`The Hobbit 3 saibskabsika diwsjnksdjnklajns`, `J.R.R.R.`, `2985asxasxasxw3232342424242323`, false);
 
 //for testing
 myLibrary.push(theHobbit);
@@ -420,27 +420,33 @@ function displayCards() {
     }
 
     myLibrary.forEach((obj, index) => {
-        const card = document.createElement(`div`);
+        const card = document.createElement(`fieldset`);
+        const read = document.createElement(`legend`);
         const title = document.createElement(`p`);
         const author = document.createElement(`p`);
         const pages = document.createElement(`p`);
-        const read = document.createElement(`p`);
+        // const read = document.createElement(`p`);
+        const viewBtn = document.createElement(`button`);
+        const deleteBtn = document.createElement(`button`);
 
         card.id = `${index}`;
         card.className = `card`;
         // card.classList.add(`card`);  //class is added but style not rendered, so i settled for inline style localStorage issue???
         // card.style.border = `1px dotted black`;
         title.innerText = `${obj.title}`;
-        author.innerText = `${obj.author}`;
-        pages.innerText = `${obj.pages}`;
-        read.innerText = `${obj.read}`;
+        read.innerText = `${obj.read}`
+        author.innerText = `by ${obj.author}`;
+        pages.innerText = `${obj.pages} pgs`;
+        // read.innerText = `${obj.read}`;
+        deleteBtn.innerText = `\u0078`;
+
 
         //for much more stylized code insertAdjacentHTML()
-        card.append(title, author, pages, read);
+        card.append(read, title , author, pages);
         lib_grid.prepend(card);
 
         //can only bind events and css-styling once element has been fully added into HTML
-        card.classList.add(`test`)
+        // card.classList.add(`test`)
         /**
          * TODO: - make it a button w/ an icon
          */

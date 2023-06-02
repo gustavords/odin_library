@@ -217,12 +217,12 @@ TODO: figure out max size for resizing to smaller display
 }
 
 #close-modal-btn:hover {
-    background-color: rgb(0,0,0,.3);
+    background-color: rgb(0, 0, 0, .3);
     cursor: pointer;
 }
 
 
-#add_book_form{
+#add_book_form {
     display: flex;
 }
 
@@ -240,24 +240,25 @@ TODO: figure out max size for resizing to smaller display
 
 }
 
-.formGroup div:nth-child(1){
+.formGroup div:nth-child(1) {
     display: flex;
 }
 
-.formGroup div:nth-child(1) label{
+.formGroup div:nth-child(1) label {
     margin-right: auto;
 }
 
-.formGroup div:nth-child(1) div{
+.formGroup div:nth-child(1) div {
     display: flex;
 }
 
 
-.formGroup:last-child div:nth-child(1) label{
+.formGroup:last-child div:nth-child(1) label {
     /* background-color: green; */
     margin-right: .5rem;
 }
-.formGroup:last-child div:nth-child(1) div{
+
+.formGroup:last-child div:nth-child(1) div {
     /* background-color: #1992D4; */
     justify-content: left;
 
@@ -293,7 +294,7 @@ TODO: figure out max size for resizing to smaller display
 /*---*/
 
 .error,
-#read-info{
+#read-info {
     display: flex;
     justify-content: right;
     margin-right: 2rem;
@@ -301,7 +302,7 @@ TODO: figure out max size for resizing to smaller display
     font-style: italic;
 }
 
-#read-info{
+#read-info {
     font-style: normal;
     color: rgb(0, 0, 0, .5);
 
@@ -323,21 +324,90 @@ TODO: figure out max size for resizing to smaller display
 
 /*--- Book Card */
 
-.test {
-    border: 1px solid red;
+.card {
+    /* border: 1px solid red; */
+    border-style: none;
     display: flex;
     flex-direction: column;
+    min-width: 0;
+    position: relative;
+    margin: 0;
+    padding: 0;
+    overflow: hidden; /*hides edges of child divs*/
+    border-radius: .4rem;
 
 }
 
-.test p{
-    border: 1px solid yellow;
-    flex: 1;
-    /* display: flex;
-    padding: 1em;
+
+
+
+.card legend {
+    background-color: #1992D4;
+    position: absolute;
+    right: 0;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
     justify-content: center;
-    align-items: center; */
+    align-items: center;
+    writing-mode: vertical-rl;
+    text-orientation: upright;
+    overflow-wrap: break-word;
+    height: 100%;
+    user-select: none;
+    font-size: x-small;
 }
+
+.card p {
+    /* border: 1px solid yellow; */
+    /* padding-left: 10%;
+
+    padding-right: 11%; */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ".....";
+    text-align: center;
+    vertical-align: middle;
+}
+
+.card p:nth-child(2) {
+    background-color: aquamarine;
+    margin: 0;
+    font-size: x-large;
+    flex: 2;
+    height: min;
+    padding: .8rem 1rem ;
+}
+
+
+.card p:nth-child(3) {
+    background-color: bisque;
+    font-style: italic;
+    padding: .2rem 1rem;
+    flex: 1;
+}
+
+.card p:nth-child(4) {
+    background-color: floralwhite;
+    font-style: oblique;
+    font-size: small;
+    padding: .2rem 1rem;
+    flex: 1;
+
+}
+
+.card button {
+    position: absolute;
+    top: 0;
+    right: 0;
+    border: 0;
+    background-color: transparent;
+    text-decoration: none;
+    padding: .45rem;
+    margin: 0;
+}
+
 /*--- */
 
 
