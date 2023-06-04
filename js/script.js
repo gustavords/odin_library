@@ -15,10 +15,10 @@ const test2 = new Book(`Wwww`, `Wwww`, `22`, false);
 const test3 = new Book(`10qqqqqqqqqqq`, `qqqqqqqqqqq`, `1000000000`, `Read`);
 
 //for testing
-// myLibrary.push(theHobbit);
-// myLibrary.push(test);
-// myLibrary.push(test2);
-// myLibrary.push(test3);
+myLibrary.push(theHobbit);
+myLibrary.push(test);
+myLibrary.push(test2);
+myLibrary.push(test3);
 
 
 function Book(title, author, pages, read) {
@@ -49,44 +49,46 @@ function addBookToLibrary(formData, location = undefined) {
         formData.get("read")
     );
 
-    /**
-     * ? Does not work if array was pre-populated with test inputs
-     * @returns boolean value if there is a match with author and title 
-     */
-    const isBookInLibrary = () => {
-        let bookMatch = false;
-        console.log(myLibrary)
-        myLibrary.forEach((libBook) => {
-            // console.log(`libBook.title: ${libBook.title}`);
-            // console.log(`book.title: ${book.title}`);
-            // console.log(`libBook.title === book.title: ${libBook.title === book.title}`);
-            // console.log(`libBook.title == book.title: ${libBook.title == book.title}`);
-            // console.log(`libBook.title === book.title && libBook.author === book.author:
-            //      ${libBook.title === book.title && libBook.author === book.author}`);
 
-            if (libBook.title === book.title && libBook.author === book.author) {
-                return bookMatch = true;
-            }
-        })
-        return bookMatch;
-    }
+    if (isBookInLibrary(book)) {
+        //for editing a book
+        if (+location >= 0 && typeof location !== undefined) {
+            myLibrary[location] = book;
+            console.log(`has been edited`);
+        }
+        else {
+            alert(`This book is already in the Library!\n\nMake sure the books have a different Title and Author`);
 
-    if (isBookInLibrary()) {
-        console.log(isBookInLibrary());
-        alert(`This book is already in the Library!\n\nMake sure the books have a different Title and Author`);
+        }
     }
     else {
         //for editing a book
         if (+location >= 0 && typeof +location === `number`) {
-            console.log(`here here here`)
             myLibrary[location] = book;
+            console.log(`has been edited`);
         }
         else {
-            myLibrary.push(book);
+        myLibrary.push(book);
         }
     }
 
 }
+
+
+/**
+ * ? Does not work if array was pre-populated with test inputs, 
+ * ? WTF it also doesn't work since i can edit to a matching book
+ * @returns boolean value if there is a match with author and title 
+ */
+const isBookInLibrary = (book) => {
+    let bookMatch = false;
+    // console.log(myLibrary)
+    myLibrary.forEach((libBook) => {
+        if (libBook.title === book.title && libBook.author === book.author) { bookMatch = true; }
+    })
+    return bookMatch;
+}
+
 
 /**
  *
@@ -257,10 +259,11 @@ const validateForm = (formSelector) => {
         let capStr = ``;
         words.forEach((word) => {
             word = word.charAt(0).toUpperCase() + word.slice(1);
+
             capStr += word + ` `;
         });
         // console.log(capStr);
-        return capStr;
+        return capStr.trim();
     }
     function titleCaseWord(string) {
         const words = string.split(` `);
@@ -270,7 +273,7 @@ const validateForm = (formSelector) => {
             newStr += word + ` `;
         });
         // console.log(newStr);
-        return newStr;
+        return newStr.trim();
     }
 
 };
@@ -283,7 +286,6 @@ const validateForm = (formSelector) => {
 const editBook = () => {
     let bookID = ``;
     lib_grid.addEventListener(`dblclick`, (e) => {
-        console.log()
         //get parent id of child element 
         if (e.target && +e.target.parentElement.id >= 0 && e.target.parentElement.id !== ``) {
             console.log(e.target.parentElement.id);
@@ -329,6 +331,44 @@ const editBook = () => {
 
     //save button that only changes once something has been edited
 };
+
+
+const currentBook = () => {
+    const currBookElement = document.getElementById(`current-book`);
+
+    lib_grid.addEventListener(`click`, (e) => {
+        //remove all everything from div
+        while (currBookElement.firstChild) {
+            currBookElement.removeChild(currBookElement.firstChild);
+        }
+        //get parent id of child element 
+        if (e.target && +e.target.parentElement.id >= 0 && e.target.parentElement.id !== ``) {
+            console.log(`its working`);
+            const bookID = e.target.parentElement.id;
+
+            const card = document.createElement(`div`);
+            const img = document.createElement(`img`)
+            const infoSection = document.createElement(`div`)
+            const title = document.createElement(`p`);
+            const author = document.createElement(`p`);
+            const read = document.createElement(`p`);
+
+            card.style.border = `1px solid red`;
+            img.style.border = `1px solid blue`;
+            infoSection.style.border = `1px solid white`;
+            title.textContent = `${myLibrary[bookID].title}`;
+            author.textContent = `${myLibrary[bookID].author}`;
+            read.textContent = `${myLibrary[bookID].read}`;
+
+
+
+            infoSection.append(title, author, read);
+            card.append(img, infoSection);
+            currBookElement.prepend(card);
+        }
+    });
+};
+currentBook();
 
 
 const isChecked = (checkBoxSelectorId) => {
