@@ -120,6 +120,7 @@ main {
     height: clamp(min(10vw, 20rem), 350px, max(90vw, 55rem));
     ;
     background-color: aqua;
+    background-color: #00cfff;
     padding: 1rem;
     display: grid;
     /* row/column */
@@ -333,16 +334,15 @@ TODO: figure out max size for resizing to smaller display
     position: relative;
     margin: 0;
     padding: 0;
-    overflow: hidden; /*hides edges of child divs*/
+    overflow: hidden;
+    /*hides edges of child divs*/
     border-radius: .4rem;
 
 }
 
-
-
-
 .card legend {
     background-color: #1992D4;
+    color: #FFFFFF;
     position: absolute;
     right: 0;
     margin: 0;
@@ -360,10 +360,6 @@ TODO: figure out max size for resizing to smaller display
 }
 
 .card p {
-    /* border: 1px solid yellow; */
-    /* padding-left: 10%;
-
-    padding-right: 11%; */
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ".....";
@@ -377,7 +373,7 @@ TODO: figure out max size for resizing to smaller display
     font-size: x-large;
     flex: 2;
     height: min;
-    padding: .8rem 1rem ;
+    padding: .8rem 1rem;
 }
 
 
@@ -406,6 +402,20 @@ TODO: figure out max size for resizing to smaller display
     text-decoration: none;
     padding: .45rem;
     margin: 0;
+}
+
+.card:hover {
+    cursor: pointer;
+    /*zooms in*/
+    -ms-transform: scale(1.1);
+    /* IE 9 */
+    -webkit-transform: scale(1.1);
+    /* Safari 3-8 */
+    transform: scale(1.1);
+}
+
+.card:active{
+    border: 3px inset white;
 }
 
 /*--- */

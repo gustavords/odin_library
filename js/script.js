@@ -37,7 +37,7 @@ Book.prototype.info = function () {
  * currently just adds to libraryArray
  * where everything should happen according to the project
  */
-function addBookToLibrary(formData, location = ``) {
+function addBookToLibrary(formData, location = undefined) {
 
     // const formData = new FormData(add_book_form);
     const book = new Book(
@@ -47,12 +47,18 @@ function addBookToLibrary(formData, location = ``) {
         formData.get("read")
     );
 
-    // if (location >= 0 && typeof location !== `string`) {
-    //     console.log(`here`)
-    //     // myLibrary[location] = book;
-    // }
+    console.log(`dis is locationÇ ${location}  myLibrary[location]: ${myLibrary[location]}`);
 
-    myLibrary.push(book);
+
+    if (+location >= 0 && typeof +location === `number`) {
+        console.log(`here here here`)
+        myLibrary[location] = book;
+    }
+    else {
+        myLibrary.push(book);
+
+    }
+
 }
 
 /**
@@ -214,6 +220,8 @@ const validateForm = (formSelector) => {
             addBookToLibrary(new FormData(add_book_form));
             displayCards();
             add_book_form.reset();
+            overlay.style.display = `none`;
+
         }
     });
 
@@ -247,109 +255,47 @@ const validateForm = (formSelector) => {
  * and its not possible to give the .card class the event since it loops do to how its generated
  */
 const editBook = () => {
-    //first get the books id
-    // console.log(book.target)
-    // console.log(e.target);
-    // document.querySelectorAll(`.card`).forEach((card)=>{
-    //     card.addEventListener(`click`, ()=>{
-    //         console.log(card.id)
-    //     });
-    // });
-    // console.log(`please work`);
-    lib_grid.addEventListener(`click`, (e) => {
-        // console.log(e.target.parentElement.id);
-        // console.log(typeof +e.target.parentElement.id);
-        // console.log(e.target);
 
+
+    let bookID = ``
+    lib_grid.addEventListener(`click`, (e) => {
+        //get parent id of child element 
         if (e.target && +e.target.parentElement.id >= 0 && e.target.parentElement.id !== ``) {
             console.log(e.target.parentElement.id);
+            //sets the form up for edit
+            // x.preventDefault();
+            add_book_form.querySelector(`button[type="submit"]`).setAttribute(`hidden`, ``);
+            edit_book_btn.removeAttribute(`hidden`);
+
+            bookID = e.target.parentElement.id;
+            console.log(`bookId: ` + bookID);
+            //get book in array through index === id
+            let theBook = myLibrary[bookID];
+
+            //open up book info already in form
+            overlay.style.display = `block`;
+            add_book_form.querySelector(`input[id="title"]`).value = `${theBook.title}`;
+            add_book_form.querySelector(`input[id="author"]`).value = `${theBook.author}`;
+            add_book_form.querySelector(`input[id="pages"]`).value = `${theBook.pages}`;
+            (theBook.read === `Read` || theBook.read === true) ?
+                add_book_form.querySelector(`input[id="read"]`).checked = true :
+                add_book_form.querySelector(`input[id="read"]`).checked = false;
+            ;
 
         }
-        // const card = lib_grid.querySelector(`div.card`);
-        // card.addEventListener(`click`, (e)=> {
-        //     console.log(`etarget: ` + e.target)
-        // });
-        // if (e.target && e.target.matches(`div.card p`)) {
-        //     console.log(`almost worked`)
-        //     if (e.target && e.target.matches(`div.card`)) {
-        //         console.log(`worked`)
-        //     }
-        // }
 
 
     });
 
+    edit_book_btn.addEventListener(`click`, (e) => {
 
-    // //sets the form up for edit
-    // // x.preventDefault();
-    // add_book_form.querySelector(`button[type="submit"]`).setAttribute(`hidden`, ``);
-    // edit_book_btn.removeAttribute(`hidden`);
-
-    // // bookID = book.id;
-    // // console.log(`bookId: ` + bookID);
-    // console.log(`book: ` + book);
-    // //get book in array through index === id
-    // let theBook = myLibrary[book.id];
-
-    // //open up book info already in form
-    // overlay.style.display = `block`;
-    // add_book_form.querySelector(`input[id="title"]`).value = `${theBook.title}`;
-    // add_book_form.querySelector(`input[id="author"]`).value = `${theBook.author}`;
-    // add_book_form.querySelector(`input[id="pages"]`).value = `${theBook.pages}`;
-    // (theBook.read === `Read` || theBook.read === true) ?
-    //     add_book_form.querySelector(`input[id="read"]`).checked = true :
-    //     add_book_form.querySelector(`input[id="read"]`).checked = false;
-    // ;
-
-
-
-    // const books = document.querySelectorAll(`.card`);
-    // let bookID = ``;
-    // books.forEach((book, index) => {
-    //     book.addEventListener(`click`, () => {
-    //         //sets the form up for edit
-    //         // x.preventDefault();
-    //         add_book_form.querySelector(`button[type="submit"]`).setAttribute(`hidden`, ``);
-    //         edit_book_btn.removeAttribute(`hidden`);
-
-    //         bookID = book.id;
-    //         console.log(`bookId: ` + bookID);
-    //         console.log(`index: ` + index);
-    //         // get book in array through index === id
-    //         let theBook = myLibrary[book.id];
-
-    //         // //open up book info already in form
-    //         overlay.style.display = `block`;
-    //         add_book_form.querySelector(`input[id="title"]`).value = `${theBook.title}`;
-    //         add_book_form.querySelector(`input[id="author"]`).value = `${theBook.author}`;
-    //         add_book_form.querySelector(`input[id="pages"]`).value = `${theBook.pages}`;
-    //         (theBook.read === `Read` || theBook.read === true) ?
-    //             add_book_form.querySelector(`input[id="read"]`).checked = true :
-    //             add_book_form.querySelector(`input[id="read"]`).checked = false;
-    //         ;
-    //     });
-
-    // });
-
-    // let theBook = myLibrary[+bookID];
-    // console.log(theBook);
-
-    //open up book info already in form
-    // add_book_form.querySelector(`input[id="title"]`).value = `${theBook.title}`;
-    // add_book_form.querySelector(`input[id="author"]`).value = `${theBook.author}`;
-    // add_book_form.querySelector(`input[id="pages"]`).value = `${theBook.pages}`;
-    // (theBook.read === `Read` || theBook.read === true) ?
-    //     add_book_form.querySelector(`input[id="read"]`).checked = true :
-    //     add_book_form.querySelector(`input[id="read"]`).checked = false;
-    // ;
-
-    // edit_book_btn.addEventListener(`click`, (e) => {
-
-    //     btnTest();
-    //     addBookToLibrary(new FormData(add_book_form), +bookID);
-    //     displayCards();
-    //     add_book_form.reset();
-    // });
+        // btnTest();
+        const test = new FormData(add_book_form);
+        console.log(test);
+        addBookToLibrary(test, bookID);
+        displayCards();
+        add_book_form.reset();
+    });
 
 
 
@@ -362,8 +308,6 @@ const editBook = () => {
 
 
 // }
-
-
 
 const isChecked = (checkBoxSelectorId) => {
     const checkBoxElement = document.getElementById(checkBoxSelectorId);
@@ -435,6 +379,11 @@ function displayCards() {
         // card.style.border = `1px dotted black`;
         title.innerText = `${obj.title}`;
         read.innerText = `${obj.read}`
+        if (obj.read === `Read` || obj.read === true) {
+            console.log(`here`);
+            read.style.backgroundColor = `rgb(225, 254, 255)`;
+            read.style.color = `#1992D4`;
+        }
         author.innerText = `by ${obj.author}`;
         pages.innerText = `${obj.pages} pgs`;
         // read.innerText = `${obj.read}`;
@@ -442,22 +391,13 @@ function displayCards() {
 
 
         //for much more stylized code insertAdjacentHTML()
-        card.append(read, title , author, pages);
+        card.append(read, title, author, pages);
         lib_grid.prepend(card);
 
         //can only bind events and css-styling once element has been fully added into HTML
-        // card.classList.add(`test`)
-        /**
-         * TODO: - make it a button w/ an icon
-         */
-        // card.addEventListener(`click`, editBook());
+        //not necessary during testing
+        card.classList.add(`card`);
     });
-    // card.addEventListener(`click`, editBook());
-    // const books = document.querySelectorAll(".card");
-
-    // books.forEach((book) => {
-    //     book.addEventListener(`click`, editBook());
-    // });
 
 }
 
