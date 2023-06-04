@@ -10,13 +10,15 @@ let myLibrary = [];
 
 //for testing
 const theHobbit = new Book(`The Hobbit`, `J.R.R. Tolkien`, `295`, true);
-const theHobbit2 = new Book(`The Hobbit 2`, `J.R.sasaswqed23d32d22d`, `2952`, false);
-const theHobbit3 = new Book(`The Hobbit 3 saibskabsika diwsjnksdjnklajns`, `J.R.R.R.`, `2985asxasxasxw3232342424242323`, false);
+const test = new Book(`Aaaa`, `Aaaa`, `11`, `Unread`);
+const test2 = new Book(`Wwww`, `Wwww`, `22`, false);
+const test3 = new Book(`10qqqqqqqqqqq`, `qqqqqqqqqqq`, `1000000000`, `Read`);
 
 //for testing
-myLibrary.push(theHobbit);
-myLibrary.push(theHobbit2);
-myLibrary.push(theHobbit3);
+// myLibrary.push(theHobbit);
+// myLibrary.push(test);
+// myLibrary.push(test2);
+// myLibrary.push(test3);
 
 
 function Book(title, author, pages, read) {
@@ -47,16 +49,41 @@ function addBookToLibrary(formData, location = undefined) {
         formData.get("read")
     );
 
-    console.log(`dis is locationÇ ${location}  myLibrary[location]: ${myLibrary[location]}`);
+    /**
+     * ? Does not work if array was pre-populated with test inputs
+     * @returns boolean value if there is a match with author and title 
+     */
+    const isBookInLibrary = () => {
+        let bookMatch = false;
+        console.log(myLibrary)
+        myLibrary.forEach((libBook) => {
+            // console.log(`libBook.title: ${libBook.title}`);
+            // console.log(`book.title: ${book.title}`);
+            // console.log(`libBook.title === book.title: ${libBook.title === book.title}`);
+            // console.log(`libBook.title == book.title: ${libBook.title == book.title}`);
+            // console.log(`libBook.title === book.title && libBook.author === book.author:
+            //      ${libBook.title === book.title && libBook.author === book.author}`);
 
+            if (libBook.title === book.title && libBook.author === book.author) {
+                return bookMatch = true;
+            }
+        })
+        return bookMatch;
+    }
 
-    if (+location >= 0 && typeof +location === `number`) {
-        console.log(`here here here`)
-        myLibrary[location] = book;
+    if (isBookInLibrary()) {
+        console.log(isBookInLibrary());
+        alert(`This book is already in the Library!\n\nMake sure the books have a different Title and Author`);
     }
     else {
-        myLibrary.push(book);
-
+        //for editing a book
+        if (+location >= 0 && typeof +location === `number`) {
+            console.log(`here here here`)
+            myLibrary[location] = book;
+        }
+        else {
+            myLibrary.push(book);
+        }
     }
 
 }
@@ -221,7 +248,6 @@ const validateForm = (formSelector) => {
             displayCards();
             add_book_form.reset();
             overlay.style.display = `none`;
-
         }
     });
 
@@ -233,7 +259,7 @@ const validateForm = (formSelector) => {
             word = word.charAt(0).toUpperCase() + word.slice(1);
             capStr += word + ` `;
         });
-        console.log(capStr);
+        // console.log(capStr);
         return capStr;
     }
     function titleCaseWord(string) {
@@ -243,7 +269,7 @@ const validateForm = (formSelector) => {
             word = word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
             newStr += word + ` `;
         });
-        console.log(newStr);
+        // console.log(newStr);
         return newStr;
     }
 
@@ -255,16 +281,16 @@ const validateForm = (formSelector) => {
  * and its not possible to give the .card class the event since it loops do to how its generated
  */
 const editBook = () => {
-
-
-    let bookID = ``
+    let bookID = ``;
     lib_grid.addEventListener(`click`, (e) => {
         //get parent id of child element 
         if (e.target && +e.target.parentElement.id >= 0 && e.target.parentElement.id !== ``) {
             console.log(e.target.parentElement.id);
+
             //sets the form up for edit
-            // x.preventDefault();
+            add_book_form.querySelector(`legend h1`).textContent = `Edit Book`;
             add_book_form.querySelector(`button[type="submit"]`).setAttribute(`hidden`, ``);
+
             edit_book_btn.removeAttribute(`hidden`);
 
             bookID = e.target.parentElement.id;
@@ -288,12 +314,12 @@ const editBook = () => {
     });
 
     edit_book_btn.addEventListener(`click`, (e) => {
-
         // btnTest();
         const test = new FormData(add_book_form);
         console.log(test);
         addBookToLibrary(test, bookID);
         displayCards();
+        overlay.style.display = `none`;
         add_book_form.reset();
     });
 
@@ -303,11 +329,6 @@ const editBook = () => {
     //save button that only changes once something has been edited
 };
 
-// function btnTest() {
-//     console.log(`kawabunga`);
-
-
-// }
 
 const isChecked = (checkBoxSelectorId) => {
     const checkBoxElement = document.getElementById(checkBoxSelectorId);
@@ -380,7 +401,7 @@ function displayCards() {
         title.innerText = `${obj.title}`;
         read.innerText = `${obj.read}`
         if (obj.read === `Read` || obj.read === true) {
-            console.log(`here`);
+            // console.log(`here`);
             read.style.backgroundColor = `rgb(225, 254, 255)`;
             read.style.color = `#1992D4`;
         }
@@ -406,6 +427,7 @@ function btnEventListeners() {
     add_book_btns.forEach((button) => {
         button.addEventListener(`click`, () => {
             add_book_form.querySelector(`button[type="submit"]`).removeAttribute(`hidden`);
+            add_book_form.querySelector(`legend h1`).textContent = `Add Book`;
             edit_book_btn.setAttribute(`hidden`, ``);
             overlay.style.display = `block`;
 
