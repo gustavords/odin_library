@@ -282,7 +282,8 @@ const validateForm = (formSelector) => {
  */
 const editBook = () => {
     let bookID = ``;
-    lib_grid.addEventListener(`click`, (e) => {
+    lib_grid.addEventListener(`dblclick`, (e) => {
+        console.log()
         //get parent id of child element 
         if (e.target && +e.target.parentElement.id >= 0 && e.target.parentElement.id !== ``) {
             console.log(e.target.parentElement.id);
