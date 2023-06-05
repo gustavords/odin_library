@@ -386,6 +386,28 @@ const currentBook = () => {
         changeCurrBook(bookID);
         lastBookID = bookID;
     });
+    document.addEventListener(`keydown`, (e)=>{
+        // (e.target && +e.target.parentElement.id >= 0 && e.target.parentElement.id !== ``) 
+        console.log(e.code);
+        if(e.code === `ArrowRight`){
+            if (lastBookID === myLibrary.length - 1  && document.getElementById(`${bookID}`) !== null) {
+                bookID = lastBookID;
+            }
+            bookID >= myLibrary.length - 1 || bookID === `` ? bookID = 0 : bookID++;
+            changeCurrBook(bookID);
+            lastBookID = bookID;
+        }
+        if(e.code === `ArrowLeft`){
+            if (lastBookID === myLibrary.length - 1 && document.getElementById(`${bookID}`) !== null) {
+                bookID = lastBookID;
+            }
+    
+            bookID <= 0 || bookID === `` ? bookID = myLibrary.length - 1 : bookID--;
+            changeCurrBook(bookID);
+            lastBookID = bookID;
+        }
+
+    });
 };
 currentBook();
 
