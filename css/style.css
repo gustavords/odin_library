@@ -422,7 +422,7 @@ TODO: figure out max size for resizing to smaller display
 
 
 
-#current_book {
+#current-book {
     background-color: mediumspringgreen;
     grid-row: 1/8;
     grid-column: 7/9;
