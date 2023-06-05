@@ -7,6 +7,7 @@ const edit_book_btn = document.querySelector(`#edit-btn`);
 const close_modal_btn = document.getElementById(`close-modal-btn`);
 let string = ``;
 let myLibrary = [];
+let lastBookID = myLibrary.length - 1;
 
 //for testing
 const theHobbit = new Book(`The Hobbit`, `J.R.R. Tolkien`, `295`, true);
@@ -242,6 +243,7 @@ const validateForm = (formSelector) => {
             displayCards();
             add_book_form.reset();
             overlay.style.display = `none`;
+            currentBookDisplay(myLibrary.length - 1);
         }
     });
 
@@ -324,63 +326,65 @@ const editBook = () => {
     //save button that only changes once something has been edited
 };
 
-function lastBook(){
-    return myLibrary.length - 1;
+
+function currentBookDisplay(bookID) {
+    lastBookID = bookID;
+    console.log(lastBookID);
+    const currBookElement = document.getElementById(`current-book`);
+
+    if (document.getElementById(`${bookID}`) !== null) {
+        // debugger;
+        document.getElementById(`${bookID}`).style.border = `1px solid red`;
+        currBookElement.querySelector(`img`).setAttribute(`alt`, `${bookID}`);
+        currBookElement.querySelector(`#title`).textContent = `${myLibrary[bookID].title}`;
+        currBookElement.querySelector(`#author`).textContent = `${myLibrary[bookID].author}`;
+        currBookElement.querySelector(`#pages`).textContent = `${myLibrary[bookID].pages}`;
+        currBookElement.querySelector(`#read`).textContent = `${myLibrary[bookID].read}`;
+    }
 }
+
 const currentBook = () => {
     const currBookElement = document.getElementById(`current-book`);
 
-    let bookID = lastBook();
-
-    if (document.getElementById(`${bookID}`) !== null) {
+    const changeCurrBook = (bookID) =>{
+        document.querySelectorAll(`.card`).forEach((card) => {
+            card.style.border = `0`;
+        });
         document.getElementById(`${bookID}`).style.border = `1px solid red`;
-
+        currBookElement.querySelector(`img`).setAttribute(`alt`, `${bookID}`);
+        currBookElement.querySelector(`#title`).textContent = `${myLibrary[bookID].title}`;
+        currBookElement.querySelector(`#author`).textContent = `${myLibrary[bookID].author}`;
+        currBookElement.querySelector(`#pages`).textContent = `${myLibrary[bookID].pages}`;
+        currBookElement.querySelector(`#read`).textContent = `${myLibrary[bookID].read}`;
     }
 
-    currBookElement.querySelector(`#title`).textContent = `${myLibrary[bookID].title}`;
-    currBookElement.querySelector(`#author`).textContent = `${myLibrary[bookID].author}`;
-    currBookElement.querySelector(`#pages`).textContent = `${myLibrary[bookID].pages}`;
-    currBookElement.querySelector(`#read`).textContent = `${myLibrary[bookID].read}`;
-
     lib_grid.addEventListener(`click`, (e) => {
-        //remove all everything from div
-        // while (currBookElement.firstChild) {
-        //     currBookElement.removeChild(currBookElement.firstChild);
-        // }
-
         //get parent id of child element 
         if (e.target && +e.target.parentElement.id >= 0 && e.target.parentElement.id !== ``) {
-            console.log(`its working`);
-            bookID = e.target.parentElement.id;
-            currBookElement.querySelector(`#title`).textContent = `${myLibrary[bookID].title}`;
-            currBookElement.querySelector(`#author`).textContent = `${myLibrary[bookID].author}`;
-            currBookElement.querySelector(`#pages`).textContent = `${myLibrary[bookID].pages}`;
-            currBookElement.querySelector(`#read`).textContent = `${myLibrary[bookID].read}`;
+            let bookID = e.target.parentElement.id;
+            changeCurrBook(bookID);
 
         }
     });
+    //since the very first add will highlight the last book
+    let bookID = lastBookID;
 
     document.getElementById(`next-book-btn`).addEventListener(`click`, () => {
-        document.querySelectorAll(`.card`).forEach((card) => {
-            card.style.border = `0`;
-        });
-        bookID === myLibrary.length - 1 || bookID === `` ? bookID = 0 : bookID++;
-        document.getElementById(`${bookID}`).style.border = `1px solid red`;
-        currBookElement.querySelector(`#title`).textContent = `${myLibrary[bookID].title}`;
-        currBookElement.querySelector(`#author`).textContent = `${myLibrary[bookID].author}`;
-        currBookElement.querySelector(`#pages`).textContent = `${myLibrary[bookID].pages}`;
-        currBookElement.querySelector(`#read`).textContent = `${myLibrary[bookID].read}`;
+        if (lastBookID === myLibrary.length - 1) {
+            bookID = lastBookID;
+        }
+        bookID >= myLibrary.length - 1 || bookID === `` ? bookID = 0 : bookID++;
+        changeCurrBook(bookID);
+        lastBookID = bookID;
     });
     document.getElementById(`previous-book-btn`).addEventListener(`click`, () => {
-        document.querySelectorAll(`.card`).forEach((card) => {
-            card.style.border = `0`;
-        });
-        bookID === 0 || bookID === `` ? bookID = myLibrary.length - 1 : bookID--;
-        document.getElementById(`${bookID}`).style.border = `1px solid red`;
-        currBookElement.querySelector(`#title`).textContent = `${myLibrary[bookID].title}`;
-        currBookElement.querySelector(`#author`).textContent = `${myLibrary[bookID].author}`;
-        currBookElement.querySelector(`#pages`).textContent = `${myLibrary[bookID].pages}`;
-        currBookElement.querySelector(`#read`).textContent = `${myLibrary[bookID].read}`;
+        if (lastBookID === myLibrary.length - 1) {
+            bookID = lastBookID;
+        }
+
+        bookID <= 0 || bookID === `` ? bookID = myLibrary.length - 1 : bookID--;
+        changeCurrBook(bookID);
+        lastBookID = bookID;
     });
 };
 currentBook();
@@ -501,5 +505,7 @@ function btnEventListeners() {
 
 btnEventListeners();
 validateForm(`#add-book-form`);  ///does it all
-displayCards(); //testing
+displayCards(); //testing\
+currentBookDisplay(myLibrary.length - 1);
+
 editBook();
