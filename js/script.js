@@ -274,8 +274,6 @@ const validateForm = (formSelector) => {
 
 /**
  * TODO: MUST DO CARD LAYOUT TO FIgure out proper event handling area, or make it a fucking button
- * Problem is event delegation only really works one parent up
- * and its not possible to give the .card class the event since it loops do to how its generated
  */
 const editBook = () => {
     let bookID = ``;
@@ -326,7 +324,6 @@ const editBook = () => {
     //save button that only changes once something has been edited
 };
 
-
 function currentBookDisplay(bookID) {
     lastBookID = bookID;
     console.log(lastBookID);
@@ -346,7 +343,7 @@ function currentBookDisplay(bookID) {
 const currentBook = () => {
     const currBookElement = document.getElementById(`current-book`);
 
-    const changeCurrBook = (bookID) =>{
+    const changeCurrBook = (bookID) => {
         document.querySelectorAll(`.card`).forEach((card) => {
             card.style.border = `0`;
         });
@@ -366,9 +363,9 @@ const currentBook = () => {
 
         }
     });
+
     //since the very first add will highlight the last book
     let bookID = lastBookID;
-
     document.getElementById(`next-book-btn`).addEventListener(`click`, () => {
         if (lastBookID === myLibrary.length - 1) {
             bookID = lastBookID;
@@ -386,22 +383,21 @@ const currentBook = () => {
         changeCurrBook(bookID);
         lastBookID = bookID;
     });
-    document.addEventListener(`keydown`, (e)=>{
-        // (e.target && +e.target.parentElement.id >= 0 && e.target.parentElement.id !== ``) 
-        console.log(e.code);
-        if(e.code === `ArrowRight`){
-            if (lastBookID === myLibrary.length - 1  && document.getElementById(`${bookID}`) !== null) {
+    document.addEventListener(`keydown`, (e) => {
+        // console.log(e.code);
+        if (e.code === `ArrowRight`) {
+            if (lastBookID === myLibrary.length - 1 && document.getElementById(`${bookID}`) !== null) {
                 bookID = lastBookID;
             }
             bookID >= myLibrary.length - 1 || bookID === `` ? bookID = 0 : bookID++;
             changeCurrBook(bookID);
             lastBookID = bookID;
         }
-        if(e.code === `ArrowLeft`){
+        if (e.code === `ArrowLeft`) {
             if (lastBookID === myLibrary.length - 1 && document.getElementById(`${bookID}`) !== null) {
                 bookID = lastBookID;
             }
-    
+
             bookID <= 0 || bookID === `` ? bookID = myLibrary.length - 1 : bookID--;
             changeCurrBook(bookID);
             lastBookID = bookID;
@@ -409,8 +405,6 @@ const currentBook = () => {
 
     });
 };
-currentBook();
-
 
 const isChecked = (checkBoxSelectorId) => {
     const checkBoxElement = document.getElementById(checkBoxSelectorId);
@@ -456,6 +450,7 @@ onlyNumbers(`pages`);
 /**
  * TODO: Spruce it up
  * ? localStorage (???) issue of CSS not rendering when class is passed after its created
+ * only owrks because onj is takes in the validateform function sumbit event listner
  */
 function displayCards() {
     //remove all nodes with .card class
@@ -466,7 +461,43 @@ function displayCards() {
         });
     }
 
-    myLibrary.forEach((obj, index) => {
+    // for (let index = myLibrary.length - 1; index >= 0; index--) {
+    //     const card = document.createElement(`fieldset`);
+    //     const read = document.createElement(`legend`);
+    //     const title = document.createElement(`p`);
+    //     const author = document.createElement(`p`);
+    //     const pages = document.createElement(`p`);
+    //     // const read = document.createElement(`p`);
+    //     const viewBtn = document.createElement(`button`);
+    //     const deleteBtn = document.createElement(`button`);
+
+    //     card.id = `${index}`;
+    //     card.className = `card`;
+    //     // card.classList.add(`card`);  //class is added but style not rendered, so i settled for inline style localStorage issue???
+    //     // card.style.border = `1px dotted black`;
+    //     title.innerText = `${obj.title}`;
+    //     read.innerText = `${obj.read}`
+    //     if (obj.read === `Read` || obj.read === true) {
+    //         // console.log(`here`);
+    //         read.style.backgroundColor = `rgb(225, 254, 255)`;
+    //         read.style.color = `#1992D4`;
+    //     }
+    //     author.innerText = `by ${obj.author}`;
+    //     pages.innerText = `${obj.pages} pgs`;
+    //     // read.innerText = `${obj.read}`;
+    //     deleteBtn.innerText = `\u0078`;
+
+
+    //     //for much more stylized code insertAdjacentHTML()
+    //     card.append(read, title, author, pages);
+    //     lib_grid.prepend(card);
+
+    //     //can only bind events and css-styling once element has been fully added into HTML
+    //     //not necessary during testing
+    //     card.classList.add(`card`);
+    // }
+    let x = myLibrary.length - 1;
+    myLibrary.slice().reverse().forEach((obj) => {
         const card = document.createElement(`fieldset`);
         const read = document.createElement(`legend`);
         const title = document.createElement(`p`);
@@ -476,7 +507,8 @@ function displayCards() {
         const viewBtn = document.createElement(`button`);
         const deleteBtn = document.createElement(`button`);
 
-        card.id = `${index}`;
+        card.id = `${x--}`;
+        // --x;
         card.className = `card`;
         // card.classList.add(`card`);  //class is added but style not rendered, so i settled for inline style localStorage issue???
         // card.style.border = `1px dotted black`;
@@ -528,6 +560,6 @@ function btnEventListeners() {
 btnEventListeners();
 validateForm(`#add-book-form`);  ///does it all
 displayCards(); //testing\
-currentBookDisplay(myLibrary.length - 1);
-
+currentBookDisplay(myLibrary.length - 1); //testing
+currentBook();
 editBook();
