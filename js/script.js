@@ -324,6 +324,26 @@ const editBook = () => {
     //save button that only changes once something has been edited
 };
 
+const deleteBook = () => {
+    const currBookElement = document.getElementById(`current-book`);
+    const deleteBtn = document.getElementById(`del-book-btn`);
+    //get delete button press
+    deleteBtn.addEventListener(`click`, (e) => {
+        const imgID = currBookElement.querySelector(`img`).getAttribute(`alt`);
+        console.log(imgID);
+
+        if (confirm(`Are you sure you want to delete?`)) {
+            myLibrary.splice(imgID, 1);
+            displayCards();
+            //display cards
+            console.log(`worked`);
+        }
+
+    });
+
+}
+
+deleteBook();
 
 /**
  * - issue with where the highligh is, 
@@ -338,7 +358,7 @@ function currentBookDisplay(bookID) {
     if (document.getElementById(`${bookID}`) !== null) {
         // debugger;
         document.getElementById(`${bookID}`).style.border = `1px solid red`;
-        currBookElement.querySelector(`img`).setAttribute(`alt`, `bookID# ${bookID}`);
+        currBookElement.querySelector(`img`).setAttribute(`alt`, `${bookID}`);
         currBookElement.querySelector(`#title`).textContent = `Title: ${myLibrary[bookID].title}`;
         currBookElement.querySelector(`#author`).textContent = `Author: ${myLibrary[bookID].author}`;
         currBookElement.querySelector(`#pages`).textContent = `Pages: ${myLibrary[bookID].pages}`;
@@ -354,7 +374,7 @@ const currentBook = () => {
             card.style.border = `0`;
         });
         document.getElementById(`${bookID}`).style.border = `1px solid red`;
-        currBookElement.querySelector(`img`).setAttribute(`alt`, `bookID# ${bookID}`);
+        currBookElement.querySelector(`img`).setAttribute(`alt`, `${bookID}`);
         currBookElement.querySelector(`#title`).textContent = `Title: ${myLibrary[bookID].title}`;
         currBookElement.querySelector(`#author`).textContent = `Author: ${myLibrary[bookID].author}`;
         currBookElement.querySelector(`#pages`).textContent = `Pages: ${myLibrary[bookID].pages}`;
@@ -366,7 +386,6 @@ const currentBook = () => {
         if (e.target && +e.target.parentElement.id >= 0 && e.target.parentElement.id !== ``) {
             let bookID = e.target.parentElement.id;
             changeCurrBook(bookID);
-
         }
     });
 
@@ -466,7 +485,7 @@ function displayCards() {
             lib_grid.removeChild(x);
         });
     }
-    
+
     let x = myLibrary.length - 1;
     myLibrary.slice().reverse().forEach((obj) => {
         const card = document.createElement(`fieldset`);
