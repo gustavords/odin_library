@@ -324,6 +324,12 @@ const editBook = () => {
     //save button that only changes once something has been edited
 };
 
+
+/**
+ * - issue with where the highligh is, 
+ * - doesnt go to the just edited book when edited
+ * @param {*} bookID 
+ */
 function currentBookDisplay(bookID) {
     lastBookID = bookID;
     console.log(lastBookID);
@@ -332,10 +338,10 @@ function currentBookDisplay(bookID) {
     if (document.getElementById(`${bookID}`) !== null) {
         // debugger;
         document.getElementById(`${bookID}`).style.border = `1px solid red`;
-        currBookElement.querySelector(`img`).setAttribute(`alt`, `${bookID}`);
-        currBookElement.querySelector(`#title`).textContent = `${myLibrary[bookID].title}`;
-        currBookElement.querySelector(`#author`).textContent = `${myLibrary[bookID].author}`;
-        currBookElement.querySelector(`#pages`).textContent = `${myLibrary[bookID].pages}`;
+        currBookElement.querySelector(`img`).setAttribute(`alt`, `bookID# ${bookID}`);
+        currBookElement.querySelector(`#title`).textContent = `Title: ${myLibrary[bookID].title}`;
+        currBookElement.querySelector(`#author`).textContent = `Author: ${myLibrary[bookID].author}`;
+        currBookElement.querySelector(`#pages`).textContent = `Pages: ${myLibrary[bookID].pages}`;
         currBookElement.querySelector(`#read`).textContent = `${myLibrary[bookID].read}`;
     }
 }
@@ -348,10 +354,10 @@ const currentBook = () => {
             card.style.border = `0`;
         });
         document.getElementById(`${bookID}`).style.border = `1px solid red`;
-        currBookElement.querySelector(`img`).setAttribute(`alt`, `${bookID}`);
-        currBookElement.querySelector(`#title`).textContent = `${myLibrary[bookID].title}`;
-        currBookElement.querySelector(`#author`).textContent = `${myLibrary[bookID].author}`;
-        currBookElement.querySelector(`#pages`).textContent = `${myLibrary[bookID].pages}`;
+        currBookElement.querySelector(`img`).setAttribute(`alt`, `bookID# ${bookID}`);
+        currBookElement.querySelector(`#title`).textContent = `Title: ${myLibrary[bookID].title}`;
+        currBookElement.querySelector(`#author`).textContent = `Author: ${myLibrary[bookID].author}`;
+        currBookElement.querySelector(`#pages`).textContent = `Pages: ${myLibrary[bookID].pages}`;
         currBookElement.querySelector(`#read`).textContent = `${myLibrary[bookID].read}`;
     }
 
@@ -460,42 +466,7 @@ function displayCards() {
             lib_grid.removeChild(x);
         });
     }
-
-    // for (let index = myLibrary.length - 1; index >= 0; index--) {
-    //     const card = document.createElement(`fieldset`);
-    //     const read = document.createElement(`legend`);
-    //     const title = document.createElement(`p`);
-    //     const author = document.createElement(`p`);
-    //     const pages = document.createElement(`p`);
-    //     // const read = document.createElement(`p`);
-    //     const viewBtn = document.createElement(`button`);
-    //     const deleteBtn = document.createElement(`button`);
-
-    //     card.id = `${index}`;
-    //     card.className = `card`;
-    //     // card.classList.add(`card`);  //class is added but style not rendered, so i settled for inline style localStorage issue???
-    //     // card.style.border = `1px dotted black`;
-    //     title.innerText = `${obj.title}`;
-    //     read.innerText = `${obj.read}`
-    //     if (obj.read === `Read` || obj.read === true) {
-    //         // console.log(`here`);
-    //         read.style.backgroundColor = `rgb(225, 254, 255)`;
-    //         read.style.color = `#1992D4`;
-    //     }
-    //     author.innerText = `by ${obj.author}`;
-    //     pages.innerText = `${obj.pages} pgs`;
-    //     // read.innerText = `${obj.read}`;
-    //     deleteBtn.innerText = `\u0078`;
-
-
-    //     //for much more stylized code insertAdjacentHTML()
-    //     card.append(read, title, author, pages);
-    //     lib_grid.prepend(card);
-
-    //     //can only bind events and css-styling once element has been fully added into HTML
-    //     //not necessary during testing
-    //     card.classList.add(`card`);
-    // }
+    
     let x = myLibrary.length - 1;
     myLibrary.slice().reverse().forEach((obj) => {
         const card = document.createElement(`fieldset`);
@@ -508,7 +479,6 @@ function displayCards() {
         const deleteBtn = document.createElement(`button`);
 
         card.id = `${x--}`;
-        // --x;
         card.className = `card`;
         // card.classList.add(`card`);  //class is added but style not rendered, so i settled for inline style localStorage issue???
         // card.style.border = `1px dotted black`;

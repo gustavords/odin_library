@@ -113,6 +113,7 @@ main {
 #lib_title {
     display: flex;
     justify-content: space-between;
+    padding: .3rem ;
 }
 
 #lib-grid {
@@ -414,7 +415,7 @@ TODO: figure out max size for resizing to smaller display
     transform: scale(1.1);
 }
 
-.card:active{
+.card:active {
     border: 3px inset white;
 }
 
@@ -426,6 +427,58 @@ TODO: figure out max size for resizing to smaller display
     background-color: mediumspringgreen;
     grid-row: 1/8;
     grid-column: 7/9;
+    display: flex;
+    flex-direction: column;
+}
+
+#current-book div:first-child {
+    display: flex;
+    justify-content: space-between;
+}
+#current-book div:last-child {
+    display: flex;
+    justify-content: space-between;
+    margin: 0 1rem;
+    gap: 1rem;
+}
+
+#current-book div>button {
+    flex: 1;
+    border: none;
+    padding: .5rem 0;
+    background-color: rgb(33, 165, 33);
+    /* border-radius: .2rem; */
+}
+
+#current-book div>button:hover{
+    color: #FFFFFF;
+    /* border:1px dotted transparent; */
+}
+#current-book div>button:active{
+    border: .5px inset white;
+}
+
+/* 
+border: none;
+padding: .5rem 0;
+background-color: var(--btn-bg);
+border-radius: .2rem; */
+
+#current-book img {
+    border: 1px red solid;
+    height: 150px;
+    margin: 1rem;
+    background-color: white;
+    font-size: xx-large;
+}
+
+#current-book #book-info {
+    /* border: 1px red solid; */
+    padding: 1rem;
+}
+
+#current-book #book-info p{
+    padding: .5rem;
 }
 
 footer {

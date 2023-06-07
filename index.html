@@ -20,7 +20,7 @@
 <body>
     <header>
         <h1>Library</h1>
-        <button type="button" class="add-btn">Add Book <i class="fa fa-plus-circle" aria-hidden="true"></i></button>
+        <!-- <button type="button" class="add-btn">Add Book <i class="fa fa-plus-circle" aria-hidden="true"></i></button> -->
     </header>
     <main>
         <div id="library">
@@ -43,7 +43,7 @@
                             <div style="background-color: blueviolet; padding:.2rem;">Child of Child</div>
                         </div>
                     </div> -->
-                    
+
                     <div id="overlay">
                         <div id="modal">
                             <form id="add-book-form" action="" onsubmit="" autocomplete="off">
@@ -121,22 +121,27 @@
                         </div>
                     </div>
                 </div>
-                <button type="button" class="add-btn">Add Book <i class="fa fa-plus-circle"
-                        aria-hidden="true"></i></button>
+                <!-- <button type="button" class="add-btn">Add Book <i class="fa fa-plus-circle"
+                        aria-hidden="true"></i></button> -->
 
             </div>
         </div>
         <!--TODO: Resizable grid in between these two???? -->
         <div id="current-book">
             <div>
-                <button type="button" id="previous-book-btn">previous</button><button type="button" id="next-book-btn">next</button>
+                <button type="button" id="previous-book-btn">previous</button><button type="button"
+                    id="next-book-btn">next</button>
             </div>
             <img src="" alt="test-pic.jpg">
             <div id="book-info">
                 <p id="title">Title</p>
-                <p id="author"> Author</p>
-                <p id="pages"> Pages</p>
-                <p id="read"> Read</p>
+                <p id="author">Author</p>
+                <p id="pages">Pages</p>
+                <p id="read">Read</p>
+            </div>
+            <div>
+                <button type="button">Delete</button>
+                <button type="button">Edit</button>
             </div>
         </div>
     </main>
